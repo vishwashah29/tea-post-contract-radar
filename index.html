@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Renewal radar — Tea Post walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --ink:#0B1821; --ink2:#33373D; --muted:#69727D; --faint:#8E979E;
+ --line:#E3E7E7; --line2:#EFF1F1; --bg:#EDEEEE; --surface:#fff;
+ --teal:#0D5E68; --teal2:#3D7E86; --deep:#05272C; --tint:#E7EFF0; --mint:#D5E8E3;
+ --indigo:#6B86D6; --coral:#E98D7D; --yellow:#EFE37E; --sea:#A9CFC9; --magenta:#CC3366;
+ --r:10px; --sh:0 1px 2px rgba(11,24,33,.05),0 4px 14px rgba(11,24,33,.05);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:"Hanken Grotesk",-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:var(--teal)}
+h1,h2,h3,h4{margin:0;font-weight:600}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:4px}
+
+/* shell */
+.app{display:grid;grid-template-columns:216px 1fr;grid-template-rows:56px 1fr;height:100vh;grid-template-areas:"brand top" "nav main"}
+.brand{grid-area:brand;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;padding:0 18px}
+.mark{width:24px;height:24px;border-radius:50%;background:var(--deep);display:grid;place-items:center;flex:none}
+.mark i{display:block;width:11px;height:11px;border:2px solid var(--mint);border-radius:50% 50% 50% 0;transform:rotate(-45deg)}
+.wordmark{font-size:16.5px;font-weight:600;letter-spacing:-.02em}
+.topbar{grid-area:top;background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 18px}
+.crumb{color:var(--muted);font-size:13px}
+.crumb b{color:var(--ink2);font-weight:500}
+.spacer{flex:1}
+.search{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:7px;padding:6px 10px;width:262px;color:var(--faint);font-size:13px;background:#FBFCFC;white-space:nowrap}
+.search svg{width:14px;height:14px;flex:none;stroke:var(--faint);fill:none;stroke-width:1.7}
+.askpill{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-size:13px;font-weight:500;background:var(--surface)}
+.askpill .mark{width:19px;height:19px}
+.askpill .mark i{width:8px;height:8px;border-width:1.5px}
+.avatar{width:28px;height:28px;border-radius:50%;background:#9242 9F;background:#92429F;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:600;flex:none}
+.nav{grid-area:nav;background:var(--surface);border-right:1px solid var(--line);padding:12px 10px;display:flex;flex-direction:column;gap:1px;overflow:auto}
+.nav .grp{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);padding:14px 10px 6px;font-weight:600}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;text-decoration:none;color:var(--ink2);font-size:13.5px}
+.nav a:hover{background:#F6F8F8}
+.nav a.on{background:var(--tint);color:var(--teal);font-weight:600}
+.nav svg{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6}
+.main{grid-area:main;overflow:auto;padding:20px 24px 60px}
+.wrap{max-width:1180px;margin:0 auto}
+
+/* page head */
+.phead{display:flex;align-items:flex-start;gap:13px;margin-bottom:18px}
+.tile{width:40px;height:40px;border-radius:9px;background:var(--tint);display:grid;place-items:center;flex:none;color:var(--teal)}
+.tile svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6}
+.phead h1{font-size:22px;letter-spacing:-.015em}
+.phead p{margin:1px 0 0;color:var(--muted);font-size:13.5px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:7px 13px;font-size:13px;font-weight:500;color:var(--ink2)}
+.btn:hover{border-color:#C9D1D1}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn.mint{background:var(--mint);border-color:var(--mint);color:var(--deep)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh)}
+.card .hd{padding:13px 16px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:10px}
+.card .hd h3{font-size:14.5px}
+.card .bd{padding:16px}
+.lbl{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);font-weight:600}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--sh)}
+.stat .n{font-size:25px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.stat .n s{text-decoration:none;font-size:14px;color:var(--muted);font-weight:400}
+.stat .t{font-size:12.5px;color:var(--muted);margin-top:2px}
+.stat.warn{border-color:#E8C4BC;background:#FDF6F4}
+.stat.warn .n{color:#B5513C}
+
+/* chart */
+.chart .row{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:10px;margin-bottom:8px;font-size:12.5px}
+.chart .row span{color:var(--ink2);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chart .bar{display:flex;height:14px;border-radius:2px;overflow:hidden;min-width:3px}
+.chart .bar i{display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:11px;padding-top:11px;border-top:1px solid var(--line2)}
+.legend b{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+
+/* table */
+table{border-collapse:collapse;width:100%}
+th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);font-weight:600;text-align:left;padding:0 14px 9px;border-bottom:1px solid var(--line)}
+td{padding:11px 14px;border-bottom:1px solid var(--line2);font-size:13.5px;vertical-align:middle}
+tbody tr:hover{background:#FAFBFB}
+tbody tr.hot{background:#FDF8F6}
+tbody tr.hot:hover{background:#FBF2EE}
+td .sup{font-weight:500}
+td .sub{font-size:12px;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.rowlink{font-weight:500;color:var(--ink);text-decoration:none}
+.rowlink:hover{color:var(--teal);text-decoration:underline}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2.5px 9px;font-size:11.5px;font-weight:500;white-space:nowrap;background:#F2F4F4;color:var(--ink2)}
+.chip.ok{background:var(--mint);color:#0C4F45}
+.chip.wait{background:#FBF4DC;color:#7A6410}
+.chip.none{background:#FBE4DE;color:#A8442F}
+.chip.teal{background:var(--tint);color:var(--teal)}
+.chip.flag{background:#FBE9F0;color:#9C1F4E}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+
+/* alert banner */
+.alert{display:flex;gap:13px;align-items:flex-start;background:#FDF6F4;border:1px solid #E8C4BC;border-left:3px solid var(--coral);border-radius:var(--r);padding:14px 16px;margin-bottom:16px}
+.alert h3{font-size:14.5px;color:#8E3A26}
+.alert p{margin:3px 0 0;font-size:13.5px;color:#7A4234}
+.alert .d{margin-left:auto;text-align:right;flex:none}
+.alert .d b{display:block;font-size:22px;font-weight:600;color:#B5513C;line-height:1}
+.alert .d s{text-decoration:none;font-size:11.5px;color:#9A6554}
+
+/* layout */
+.cols{display:grid;grid-template-columns:1fr 316px;gap:16px;align-items:start}
+.pack{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px;box-shadow:var(--sh)}
+.pk h4{font-size:13px;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.pk h4 svg{width:15px;height:15px;stroke:var(--teal2);fill:none;stroke-width:1.6}
+.pk ul{margin:0;padding-left:0;list-style:none}
+.pk li{font-size:13px;color:var(--ink2);padding:3.5px 0;display:flex;gap:8px}
+.pk li::before{content:"";width:4px;height:4px;border-radius:50%;background:#C3CBCB;margin-top:7.5px;flex:none}
+.pk.q{border-style:dashed;background:#FCFDFD}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:4px 0}
+.kv s{text-decoration:none;color:var(--muted)}
+.kv b{font-weight:500}
+
+/* rail */
+.owner{text-align:center;padding:4px 0 2px}
+.owner .av{width:44px;height:44px;border-radius:50%;background:#2E6E78;color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600;margin:0 auto 9px}
+.owner .nm{font-weight:600;font-size:14.5px}
+.owner .ro{font-size:12.5px;color:var(--muted)}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:14px 1fr;gap:10px;padding-bottom:13px;position:relative;font-size:12.5px}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:6px;top:15px;bottom:2px;width:1px;background:var(--line)}
+.tl .pip{width:11px;height:11px;border-radius:50%;border:2px solid #CFD6D6;background:#fff;margin-top:3px;z-index:1}
+.tl .now .pip{border-color:var(--coral);background:var(--coral)}
+.tl .done .pip{border-color:var(--teal);background:var(--teal)}
+.tl b{display:block;font-weight:600;font-size:12.5px}
+.tl s{text-decoration:none;color:var(--muted)}
+.tl .future{color:var(--faint)}
+.docs{list-style:none;margin:0;padding:0}
+.docs li{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:13px;border-bottom:1px solid var(--line2)}
+.docs li:last-child{border:0}
+.ft{width:20px;height:24px;border-radius:3px;display:grid;place-items:center;font-size:7.5px;font-weight:700;color:#fff;flex:none;letter-spacing:.02em}
+.ft.pdf{background:#D4493C}.ft.doc{background:#2B6CC4}.ft.ml{background:#8A94A0}
+.docs s{text-decoration:none;color:var(--muted);font-size:11.5px;display:block}
+
+/* notes pins */
+.pin{position:absolute;width:19px;height:19px;border-radius:50%;background:var(--indigo);color:#fff;font-size:10.5px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 3px rgba(107,134,214,.22);z-index:40}
+.pin:hover{background:#4F6BC0}
+.pop{position:fixed;z-index:90;width:272px;background:var(--surface);border:1px solid var(--line);border-radius:9px;box-shadow:0 10px 32px rgba(11,24,33,.17);padding:12px 13px;font-size:13px}
+.pop .tag{font-size:10px;letter-spacing:.07em;text-transform:uppercase;font-weight:700;padding:2px 7px;border-radius:999px;display:inline-block;margin-bottom:7px}
+.tag.have{background:#EEF0F2;color:#5A6470}
+.tag.new{background:#E8ECFA;color:#3C56A8}
+.pop p{margin:0;color:var(--ink2)}
+.pop button{position:absolute;top:8px;right:9px;color:var(--faint);font-size:15px;line-height:1}
+
+/* tour */
+.scrim{position:fixed;inset:0;background:rgba(6,20,26,.52);z-index:100;backdrop-filter:blur(1px)}
+.spot{position:fixed;z-index:101;border-radius:9px;box-shadow:0 0 0 9999px rgba(6,20,26,.52);pointer-events:none;transition:all .26s cubic-bezier(.4,0,.2,1);outline:2px solid rgba(213,232,227,.9);outline-offset:0}
+.tip{position:fixed;z-index:103;width:328px;background:var(--surface);border-radius:11px;box-shadow:0 16px 44px rgba(6,20,26,.3);padding:17px 18px 14px;transition:all .26s cubic-bezier(.4,0,.2,1)}
+.tip .arw{position:absolute;width:11px;height:11px;background:var(--surface);transform:rotate(45deg)}
+.tip .who{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--teal);background:var(--tint);padding:2.5px 9px;border-radius:999px;margin-bottom:9px}
+.tip h3{font-size:16px;letter-spacing:-.01em;margin-bottom:5px}
+.tip p{margin:0;font-size:13.5px;color:var(--ink2);line-height:1.5}
+.tip .ft2{display:flex;align-items:center;gap:10px;margin-top:15px}
+.tip .prog{flex:1;display:flex;gap:4px}
+.tip .prog i{height:3px;flex:1;border-radius:2px;background:#E1E6E6}
+.tip .prog i.on{background:var(--teal)}
+.tip .ct{font-size:11.5px;color:var(--faint);font-variant-numeric:tabular-nums}
+.tip .x{position:absolute;top:11px;right:12px;color:var(--faint);font-size:16px;line-height:1}
+.tip .skip{font-size:12.5px;color:var(--muted);text-decoration:underline;padding:0}
+
+/* welcome */
+.ov{position:fixed;inset:0;background:rgba(6,20,26,.55);z-index:200;display:grid;place-items:center;padding:24px;overflow:auto;backdrop-filter:blur(2px)}
+.wel{background:var(--surface);border-radius:14px;box-shadow:0 24px 70px rgba(6,20,26,.4);width:min(760px,100%);overflow:hidden}
+.wel .top2{background:linear-gradient(135deg,var(--deep),#0E4A52);color:#fff;padding:26px 30px 24px}
+.wel .top2 .lbl{color:#8FBDC0}
+.wel h2{font-size:26px;letter-spacing:-.02em;margin:7px 0 7px;font-weight:600}
+.wel .top2 p{margin:0;font-size:14.5px;color:#C7DADC;max-width:60ch;line-height:1.55}
+.facts{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+.facts span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.17);border-radius:7px;padding:5px 11px;font-size:12.5px;color:#DCE9EA}
+.facts b{color:#fff;font-weight:600}
+.wel .bd2{padding:22px 30px 26px}
+.cast{display:grid;grid-template-columns:1fr 1fr;gap:13px 20px;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid var(--line2)}
+.cast div{display:flex;align-items:center;gap:8px}
+.cast .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:600;flex:none}
+.cast b{display:block;font-size:13px;font-weight:600;line-height:1.25}
+.cast s{text-decoration:none;font-size:11.5px;color:var(--muted)}
+.tours{display:grid;gap:9px}
+.tr{display:flex;align-items:center;gap:13px;border:1px solid var(--line);border-radius:9px;padding:13px 15px;text-align:left;width:100%;background:var(--surface)}
+.tr:hover{border-color:var(--teal2);background:#FBFDFD}
+.tr .ix{width:28px;height:28px;border-radius:7px;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-size:12.5px;font-weight:700;flex:none}
+.tr b{display:block;font-size:14px;font-weight:600}
+.tr s{text-decoration:none;font-size:12.5px;color:var(--muted)}
+.tr .go{margin-left:auto;color:var(--teal);font-size:18px;flex:none}
+.tr[disabled]{opacity:.5;cursor:default}
+.tr[disabled]:hover{border-color:var(--line);background:var(--surface)}
+.tr[disabled] .ix{background:#F2F4F4;color:var(--faint)}
+.tr[disabled] .go{color:var(--faint);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.welft{display:flex;align-items:center;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line2)}
+.welft p{margin:0;font-size:12px;color:var(--faint);line-height:1.4}
+
+.done2{text-align:center;padding:4px 0}
+.done2 .tick{width:46px;height:46px;border-radius:50%;background:var(--mint);color:#0C4F45;display:grid;place-items:center;margin:0 auto 12px;font-size:21px}
+@media (max-width:1000px){.app{grid-template-columns:0 1fr}.nav,.brand{display:none}.cols{grid-template-columns:1fr}.pack,.stats{grid-template-columns:1fr 1fr}}
+
+/* phase 2 */
+.btn.sm.ghost{border-color:transparent;color:var(--muted)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:-4px 0 16px}
+.tabs button{padding:9px 13px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button:hover{color:var(--ink)}
+.tabs button.on{color:var(--teal);border-color:var(--teal);font-weight:600}
+.tabs .cn{display:inline-block;margin-left:6px;background:#F2F4F4;color:var(--ink2);border-radius:999px;padding:0 7px;font-size:11.5px;font-weight:600}
+.tabs button.on .cn{background:var(--tint);color:var(--teal)}
+.alert.good{background:#F2F8F6;border-color:#BFDCD3;border-left-color:var(--teal2)}
+.alert.good h3{color:#0C4F45}.alert.good p{color:#35625A}
+.alert.good .d b{color:var(--teal)}.alert.good .d s{color:#5C8780}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.split.wide{grid-template-columns:1.15fr 1fr}
+tr.clk{cursor:pointer}
+tr.sel,tr.sel:hover{background:var(--tint)}
+.chip.low{background:#F1ECF8;color:#5B3C94}
+.chip.chk{background:#FBF4DC;color:#7A6410}
+.quote{background:#F7F9F9;border-left:3px solid var(--sea);border-radius:0 6px 6px 0;padding:11px 13px;font-size:13px;line-height:1.6;color:var(--ink2)}
+.quote mark{background:#F6EBA0;padding:0 2px;border-radius:2px;color:var(--ink)}
+.quote .src{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px}
+.letter{background:#FBFCFC;border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.65;color:var(--ink2)}
+.letter .nt{color:var(--muted);font-size:12px}
+.opt{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:10px 13px;margin-bottom:8px;width:100%;text-align:left;font-size:13.5px;background:var(--surface)}
+.opt:hover{border-color:#C9D1D1}
+.opt .rd{width:15px;height:15px;border-radius:50%;border:1.5px solid #B6BFBF;flex:none;display:grid;place-items:center}
+.opt.on{border-color:var(--teal2);background:#F6FAFA}
+.opt.on .rd{border-color:var(--teal)}
+.opt.on .rd::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal)}
+.opt[disabled]{cursor:default;opacity:.75}
+textarea,.in{font:inherit;font-size:13.5px;width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 11px;color:var(--ink);background:var(--surface);resize:vertical}
+textarea:focus,.in:focus{outline:2px solid var(--teal2);outline-offset:0;border-color:var(--teal2)}
+.fld{display:block;font-size:12.5px;font-weight:600;margin:12px 0 5px;color:var(--ink2)}
+.log{list-style:none;margin:0;padding:0}
+.log li{display:grid;grid-template-columns:78px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+.log li:last-child{border:0}
+.log s{text-decoration:none;color:var(--muted)}
+.askbox{display:flex;gap:8px;margin-top:11px}
+.qs{display:flex;gap:8px;flex-wrap:wrap}
+.qs .btn.on{background:var(--tint);border-color:#BCD3D6;color:var(--teal)}
+.cite{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.ans h2{font-size:18px;letter-spacing:-.01em;margin-bottom:7px}
+.ans ul{margin:8px 0;padding-left:18px;font-size:13.5px;color:var(--ink2)}
+.ans.nf{border-style:dashed}
+.foot{font-size:12px;color:var(--muted);margin-top:11px}
+.tfoot{padding:10px 16px;border-top:1px solid var(--line2);font-size:12px;color:var(--faint)}
+.perf{position:relative;height:130px;display:flex;align-items:flex-end;gap:7px;padding:0 4px;margin-top:22px}
+.perf i{display:block;flex:1;border-radius:3px 3px 0 0;background:var(--sea)}
+.perf i.m{background:var(--coral)}
+.perf .lv{position:absolute;left:0;right:0;border-top:1.5px dashed var(--teal)}
+.perf .lv span{position:absolute;right:0;top:-19px;font-size:11px;color:var(--teal);background:#fff;padding:0 4px;font-weight:600}
+.pm{display:flex;gap:7px;padding:0 4px;margin-top:6px}
+.pm span{flex:1;text-align:center;font-size:11px;color:var(--muted);line-height:1.3}
+.pm b{display:block;font-weight:600;color:var(--ink2);font-size:11.5px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;margin-bottom:10px;padding:0}
+.back:hover{color:var(--teal)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--deep);color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;z-index:300;box-shadow:0 8px 24px rgba(6,20,26,.3);max-width:80vw}
+.leaver{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;text-align:center;font-size:12.5px}
+.leaver .p{border:1px solid var(--line);border-radius:8px;padding:9px 6px}
+.leaver .p b{display:block;font-size:13px}
+.leaver .p s{text-decoration:none;color:var(--muted);font-size:11.5px}
+.leaver .p.x{background:#FDF6F4;border-color:#E8C4BC}
+.nofig{font-size:12.5px;color:var(--muted)}
+.tqs{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tq{border:1px solid var(--line);border-radius:9px;padding:11px 14px;text-align:left;background:var(--surface)}
+.tq:hover{border-color:var(--teal2);background:#FBFDFD}
+.tq b{display:block;font-size:13.5px;font-weight:600}
+.tq s{text-decoration:none;font-size:12px;color:var(--muted)}
+.tip .ft2{flex-wrap:wrap}
+.tip .ft2.two .prog{flex:1 1 100%}
+.tip .ft2.two .ct{margin-right:auto}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{padding:5px 11px;font-size:12.5px;color:var(--muted);border-right:1px solid var(--line);background:var(--surface)}
+.seg button:last-child{border:0}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--tint);color:var(--teal);font-weight:600}
+.plist{display:grid;gap:6px}
+.pp{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;text-align:left;background:var(--surface);width:100%}
+.pp:hover{border-color:var(--teal2);background:#FBFDFD}
+.pp b{display:block;font-size:13px;font-weight:600;line-height:1.25}
+.pp s{text-decoration:none;font-size:11.5px;color:var(--muted)}
+.av2{width:28px;height:28px;border-radius:50%;background:#2E6E78;color:#fff;display:grid;place-items:center;font-size:10.5px;font-weight:600;flex:none}
+.docs li.dl{cursor:pointer;border-radius:6px}
+.docs li.dl:hover{background:#F6F8F8}
+tr.clk[data-go]{cursor:pointer}
+
+.empty{border:1.5px dashed var(--line,#D8DEE4);border-radius:12px;padding:22px 16px;text-align:center;color:var(--muted);font-size:13px;line-height:1.5}
+.empty b{display:block;color:var(--ink);font-size:14px;font-weight:600;margin-bottom:3px}
+.clock{display:flex;align-items:center;gap:2px;background:#fff;border:1px solid var(--line,#D8DEE4);border-radius:9px;padding:2px 3px 2px 10px;margin-right:10px}
+.clock span{font-size:11px;color:var(--muted);margin-right:6px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.clock button{border:0;background:transparent;font:inherit;font-size:12px;padding:5px 9px;border-radius:7px;cursor:pointer;color:var(--ink2,#34454F);white-space:nowrap}
+.clock button:hover{background:#EEF3F2}
+.clock button.on{background:var(--teal,#0D5E68);color:#fff}
+.scanw{margin-top:14px;background:#FFF6E0;border:1px solid #F0DDA6;border-radius:10px;padding:10px 12px;font-size:12.5px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.scanw .btn{margin-left:auto}
+.stat.warn .t{color:#B3402F}
+.topbar .btn,.topbar .askpill,.topbar .crumb,.topbar .search{white-space:nowrap}
+.topbar .crumb{flex:0 1 auto;min-width:0}
+@media (max-width:1500px){.clock span{display:none}.clock{padding-left:3px}.topbar .search{width:140px!important;overflow:hidden;text-overflow:ellipsis}}
+@media (max-width:1500px){.topbar .search{width:38px!important;padding:0;font-size:0;justify-content:center}.topbar .search svg{margin:0}.clock button{padding:5px 7px}.topbar .spacer{flex:0 0 0}.topbar{gap:8px}}
+.aboutfab{position:fixed;right:18px;bottom:18px;z-index:250;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;color:var(--ink2);border-radius:999px;padding:7px 14px 7px 8px;font:inherit;font-size:12.5px;cursor:pointer;box-shadow:0 4px 16px rgba(6,20,26,.14)}
+.aboutfab i{width:20px;height:20px;border-radius:50%;background:var(--teal,#0D5E68);color:#fff;font-style:normal;font-weight:600;font-size:12px;display:grid;place-items:center}
+.aboutfab:hover{border-color:var(--teal,#0D5E68);color:var(--teal,#0D5E68)}
+.about{position:fixed;inset:0;z-index:300;background:#F4F6F6;overflow:auto;scroll-behavior:smooth}
+.abh{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid var(--line)}
+.abhi{max-width:1040px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:14px}
+.abtt{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.abnav{display:flex;gap:2px;flex-wrap:wrap}
+.abnav button{border:0;background:transparent;font:inherit;font-size:12px;color:var(--muted);padding:5px 8px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.abnav button:hover{background:#EEF3F2;color:var(--teal,#0D5E68)}
+.abw{max-width:1040px;margin:0 auto;padding:22px 28px 40px}
+.abtop{background:linear-gradient(135deg,var(--deep,#05272C),#0E4A52);color:#C7DADC;border-radius:14px;padding:22px 26px;margin-bottom:18px}
+.abtop p{margin:0 0 14px;font-size:15px;line-height:1.55;max-width:70ch}.abtop b{color:#fff}
+.abgo{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.abgo span{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:#8FBDC0;font-weight:600;margin-right:4px}
+.abs{background:#fff;border-radius:12px;padding:20px 24px 22px;margin-bottom:14px;box-shadow:0 1px 2px rgba(6,20,26,.06);scroll-margin-top:70px;position:relative}
+.abs h2{font-size:18px;margin:0 0 12px;letter-spacing:-.01em;font-weight:600}
+.abn{position:absolute;right:22px;top:16px;font-size:30px;font-weight:600;color:#E3EAEA;line-height:1}
+.ablead{margin:0 0 12px;font-size:14px;line-height:1.55;color:var(--ink2)}
+.abl{margin:0;padding-left:18px;font-size:14px;line-height:1.55;color:var(--ink2)}.abl li{margin-bottom:7px}
+.abfn{margin:10px 0 0;font-size:12px;color:var(--muted)}
+.abt{width:100%;border-collapse:collapse;font-size:13.5px}
+.abt th{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);text-align:left;padding:0 12px 8px;border-bottom:1px solid var(--line)}
+.abt td{padding:10px 12px;border-bottom:1px solid var(--line2);vertical-align:top;line-height:1.45}
+.abt td.f{width:24%}.abt td s{text-decoration:none;color:var(--muted);font-size:12px}
+.abt tr.grp td{background:#F4F8F8;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--teal,#0D5E68);padding:6px 12px}
+.abstat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.abstat div{background:#F4F8F8;border-radius:10px;padding:14px 16px}
+.abstat b{display:block;font-size:26px;letter-spacing:-.02em;font-weight:600;color:var(--teal,#0D5E68)}
+.abstat span{font-size:12.5px;color:var(--ink2);line-height:1.4;display:block;margin-top:2px}
+.about2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.about2>div{background:#F4F8F8;border-radius:10px;padding:12px 16px}.about2 p{margin:5px 0 0;font-size:13px;line-height:1.5;color:var(--ink2)}
+.abend{text-align:center;font-size:12px;color:var(--faint);padding:8px 0 0}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="layer"></div>
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s)};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")};
+var ICON={
+ home:'<path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3v-5H7v5H4a1 1 0 0 1-1-1z"/>',
+ repo:'<path d="M4 4h5l1.5 2H16v10H4z"/>',
+ radar:'<circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="3"/><path d="M10 3v3M17 10h-3"/>',
+ obl:'<path d="M5 3h10v14H5z"/><path d="M8 7h4M8 10h4M8 13h2"/>',
+ rep:'<path d="M4 16V8M9 16V4M14 16v-6"/>',
+ adm:'<circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M17 10h-2M5 10H3M15 5l-1.4 1.4M6.4 13.6 5 15M15 15l-1.4-1.4M6.4 6.4 5 5"/>',
+ rupee:'<path d="M6 4h8M6 7.5h8M12.5 4c0 3-2 3.5-4 3.5h-.5L13 16"/>',
+ swap:'<path d="M4 7h10l-3-3M16 13H6l3 3"/>',
+ gauge:'<path d="M4 14a6 6 0 1 1 12 0"/><path d="M10 14l3-3.5"/>',
+ eye:'<path d="M2 10s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5z"/><circle cx="10" cy="10" r="2"/>',
+ find:'<circle cx="9" cy="9" r="5.5"/><path d="M13 13l4 4"/>',
+ spark:'<path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6z"/>'
+};
+function svg(k,cls){return '<svg viewBox="0 0 20 20"'+(cls?' class="'+cls+'"':'')+'>'+ICON[k]+'</svg>'}
+
+/* ================= data: one source for every number on screen ================= */
+var DL=new Date(2026,11,31), TODAY=new Date(2026,6,4);
+var STOPS=[new Date(2026,6,4),new Date(2026,6,18),new Date(2026,7,3),new Date(2026,8,2),new Date(2027,0,2)], STOPLBL=["4 Jul","18 Jul","3 Aug","2 Sep","2 Jan 2027"], STG_ON=["4 Jul","18 Jul","3 Aug","2 Sep"];
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmt(d){return d.getDate()+" "+MON[d.getMonth()]+" "+d.getFullYear()}
+function dleft(d){return Math.round((d-TODAY)/864e5)}
+function td(){return fmt(TODAY)}
+function elapsed(){return Math.round((TODAY-STOPS[0])/864e5)}
+function escStage(){var e=elapsed();return e>=60?3:e>=30?2:e>=14?1:0}
+var ROWS=[
+ {id:"mehsana",s:"Mehsana Tea Estates",a:"Supply Agreement",c:"Tea leaf",d:new Date(2026,9,30),o:"ok",val:3.20},
+ {id:"kaveri",s:"Kaveri Packaging",a:"Master Supply Agreement",c:"Cups and packaging",d:DL,o:"wait",val:1.80,hot:1},
+ {id:"shree",s:"Shree Facilities",a:"Services Agreement",c:"Cleaning, stores",d:new Date(2027,0,15),o:"none",val:0.60,lo:"Mar 2026"},
+ {id:"cloudbill",s:"CloudBill",a:"SaaS Order Form",c:"Billing software",d:new Date(2027,0,31),o:"ok",val:0.40},
+ {id:"saurashtra",s:"Saurashtra Dairy",a:"Supply Agreement",c:"Milk",d:new Date(2027,1,15),o:"ok",val:2.10},
+ {id:"payease",s:"PayEase POS",a:"SaaS Order Form",c:"Payments software",d:new Date(2027,1,28),o:"ok",val:0.50},
+ {id:"surat",s:"Surat Logistics",a:"Logistics Services Agreement",c:"Transport",d:new Date(2027,2,31),o:"wait",val:1.10},
+ {id:"rajkot",s:"Rajkot Cold Chain",a:"Services Agreement",c:"Cold storage",d:new Date(2027,3,30),o:"ok",val:0.90},
+ {id:"storefit",s:"StoreFit Interiors",a:"Works Contract",c:"Store fit-outs",d:new Date(2027,4,31),o:"none",val:1.40,lo:"Jan 2026"},
+ {id:"brightsign",s:"Bright Sign",a:"Services Agreement",c:"Signage",d:new Date(2027,5,30),o:"ok",val:0.20},
+ {id:"gujprint",s:"Gujarat Print",a:"Supply Agreement",c:"Menus and flyers",d:new Date(2027,7,31),o:"ok",val:0.30},
+ {id:"ahmbakers",s:"Ahmedabad Bakers",a:"Supply Agreement",c:"Snacks",d:new Date(2027,8,30),o:"ok",val:1.70}
+];
+var OWN={ok:["ok","Accepted"],wait:["wait","Not accepted"],none:["none","No owner"]};
+var CAST=[
+ {i:"RS",n:"Rohan Shah",r:"Business owner, Supply Chain",c:"#2E6E78"},
+ {i:"AP",n:"Anita Pillai",r:"Procurement, category manager",c:"#92429F"},
+ {i:"MJ",n:"Meera Joshi",r:"Legal, contract administrator",c:"#B5513C"},
+ {i:"DK",n:"Dev Kapadia",r:"Finance and FP&A",c:"#3C56A8"}
+];
+var PEOPLE={
+ rs:{n:"Rohan Shah",r:"Business owner, Supply Chain",i:"RS"},
+ fk:{n:"Farah Khan",r:"Head of Operations",i:"FK"},
+ sr:{n:"Sunita Rao",r:"Head of Sourcing",i:"SR"},
+ km:{n:"Karan Mehta",r:"IT lead",i:"KM"},
+ nd:{n:"Nikhil Desai",r:"Head of Stores",i:"ND"},
+ ls:{n:"Lata Shah",r:"Marketing lead",i:"LS"},
+ pn:{n:"Priya Nair",r:"Manager, Supply Chain",i:"PN"}
+};
+var PICKABLE=["rs","fk","sr","km","nd","ls"];
+/* what each contract says (all invented). Kaveri is hand-written below; the rest feed a template. */
+var SPEC={
+ mehsana:{docs:[["pdf","Supply Agreement","Signed 12 Nov 2023"],["pdf","Price Schedule 2025","1 Apr 2025"]],notice:60,price:"Fixed per kg, reviewed each April",pay:"30 days from invoice",liab:"Fees paid in the last 12 months",city:"Ahmedabad",sl:"Moisture at receipt, at most 4%",flag:[],changes:["Price schedule reissued 1 Apr 2025"],own:"sr"},
+ shree:{docs:[["pdf","Services Agreement","Signed 3 Jun 2024"],["doc","Scope Schedule","3 Jun 2024"]],notice:90,price:"Fixed for 2 years, then index-linked",pay:"30 days from invoice",liab:"Annual fees",city:"Ahmedabad",sl:"Weekly store cleaning audit, 90% pass",flag:[0,3,4,5,6],changes:[],own:null},
+ cloudbill:{docs:[["pdf","SaaS Order Form","Signed 1 Feb 2025"],["pdf","Terms of Service","Accepted online"]],notice:30,price:"Per-store licence, up 5% a year",pay:"Annual, in advance",liab:"Fees paid in the last 12 months",city:"Bengaluru",sl:"Uptime, at least 99.5% a month",flag:[],changes:[],own:"km"},
+ saurashtra:{docs:[["pdf","Supply Agreement","Signed 15 Feb 2024"],["pdf","Amendment 1","1 Feb 2025 · price formula"]],notice:90,price:"Milk procurement index, max 8%",pay:"15 days from delivery",liab:"Value of goods delivered in 12 months",city:"Ahmedabad",sl:"Delivery temperature, at most 5°C",flag:[3,6],changes:["Price formula replaced by Amendment 1 (Feb 2025)"],own:"fk"},
+ payease:{docs:[["pdf","SaaS Order Form","Signed 28 Feb 2025"]],notice:60,price:"0.4% per transaction",pay:"Monthly in arrears, 15 days",liab:"Fees paid in the last 12 months",city:"Mumbai",sl:"No service level stated",flag:[6],changes:[],own:"km"},
+ surat:{docs:[["pdf","Logistics Services Agreement","Signed 31 Mar 2024"],["doc","Lane Schedule","1 Apr 2024 · scan"]],notice:90,price:"Per kilometre, reviewed each year",pay:"30 days from invoice",liab:"Fees paid in the last 12 months",city:"Ahmedabad",sl:"On-time delivery, at least 95% a lane",flag:[0,3,5,6],changes:["Lane rates sit in a scanned schedule"],own:"fk"},
+ rajkot:{docs:[["pdf","Services Agreement","Signed 30 Apr 2024"]],notice:60,price:"Fixed per pallet",pay:"30 days from invoice",liab:"Fees paid in the last 12 months",city:"Ahmedabad",sl:"Cold room temperature, at most 4°C",flag:[3,5,6],changes:[],own:"nd"},
+ storefit:{docs:[["pdf","Works Contract","Signed 31 May 2024"],["doc","Bill of Quantities","31 May 2024 · scan"]],notice:90,price:"Fixed lump sum per store",pay:"By milestone, 30 days",liab:"Contract value",city:"Ahmedabad",sl:"Handover within 45 days of start",flag:[0,1,3,4,5,6],changes:[],own:null},
+ brightsign:{docs:[["pdf","Services Agreement","Signed 30 Jun 2024"]],notice:30,price:"Fixed per sign",pay:"30 days from invoice",liab:"Fees paid in the last 12 months",city:"Ahmedabad",sl:"Install within 10 days of order",flag:[3,6],changes:[],own:"ls"},
+ gujprint:{docs:[["pdf","Supply Agreement","Signed 31 Aug 2024"]],notice:60,price:"Fixed per thousand prints",pay:"30 days from invoice",liab:"Fees paid in the last 12 months",city:"Ahmedabad",sl:"Delivery within 5 days of order",flag:[],changes:[],own:"ls"},
+ ahmbakers:{docs:[["pdf","Supply Agreement","Signed 30 Sep 2024"],["pdf","Amendment 1","1 Mar 2025 · pack sizes"]],notice:60,price:"Fixed per pack, reviewed each April",pay:"15 days from delivery",liab:"Value of goods delivered in 12 months",city:"Ahmedabad",sl:"Delivery before 7am, 95% of days",flag:[6],changes:["Pack sizes changed by Amendment 1 (Mar 2025)"],own:"sr"},
+ kaveri:{docs:[["pdf","Master Supply Agreement","Signed 1 Apr 2024","Master"],["doc","Statement of Work 2","1 Jan 2025 · schedule is a scan","SOW 2"],["pdf","Amendment 1","1 Oct 2025 · changed the notice period","Amendment 1"],["ml","Email from Kaveri","12 Mar 2026 · not a signed document","Email"]],
+  notice:180,termEnd:"30 Jun 2027",price:"Index-linked, max 6%",pay:"45 days",changes:["Notice went from 90 to 180 days (Amendment 1, Oct 2025)","Supplier offered 3% off above 50,000 cups a month"],unpapered:1,own:"rs",signed:3}
+};
+var NW={30:"thirty",45:"forty-five",60:"sixty",90:"ninety",120:"one hundred and twenty",180:"one hundred and eighty"};
+function words(n){return (NW[n]||n)+" ("+n+")"}
+var FLAG=[
+ ["deadline field, not yet checked by Legal","A field that sets a deadline is always checked by a person."],
+ ["term dates not yet checked","The end date was worked out from two documents."],
+ ["renewal wording unclear","The renewal clause was only partly legible."],
+ ["read from a scan","The table is on a scanned page. Low confidence."],
+ ["service-level wording not yet checked","The credit rule is spread over two clauses."],
+ ["two documents disagree","The payment days differ between documents."],
+ ["carve-outs not read","The carve-outs were not read. Low confidence."],
+ ["jurisdiction wording unclear","Two courts are named."]
+];
+/* Kaveri, field by field (hand-written) */
+var KF=[
+ {k:"Notice to stop renewal",v:"180 days before the end of the term",st:"chk",sh:"changed by an amendment, not yet checked by Legal",why:"Changed by the amendment. Two documents disagree.",doc:"Amendment 1, clause 2 (1 Oct 2025)",src:"Clause 14.2 of the Master Supply Agreement is amended by replacing <mark>ninety (90) days</mark> with <mark>one hundred and eighty (180) days</mark>."},
+ {k:"Current term ends",v:"30 Jun 2027",st:"ok",doc:"SOW 2, clause 3 (1 Jan 2025)",src:"This Statement of Work runs for <mark>thirty (30) months</mark> from 1 January 2025 and then renews as stated in the Master Supply Agreement."},
+ {k:"Renewal",v:"Renews by itself, 1 year at a time",st:"ok",doc:"Master Supply Agreement, clause 14.1",src:"The Agreement <mark>renews automatically for successive periods of one (1) year</mark> unless either party gives written notice as set out in 14.2."},
+ {k:"Price change",v:"Yearly, follows the consumer price index, max 6%",st:"low",sh:"read from a scan",why:"The table is on a scanned page. Low confidence.",doc:"SOW 2, schedule B (scan)",src:"Charges shall be revised each 1 April by the percentage change in the <mark>Consumer Price Index (Industrial Workers)</mark>, <mark>not to exceed six percent (6%)</mark>. [scan, text partly unclear]"},
+ {k:"On-time delivery level",v:"96% a month, credit if missed",st:"ok",doc:"SOW 2, schedule C",src:"Supplier shall deliver <mark>ninety-six percent (96%)</mark> of orders on time each month. For a month below this level a credit of <mark>two percent (2%)</mark> of that month's invoice applies."},
+ {k:"Payment terms",v:"45 days from receipt of invoice",st:"chk",sh:"two documents disagree",why:"The master says 30 days, SOW 2 says 45. Which one wins?",doc:"SOW 2, clause 6 against Master, clause 9",src:"Invoices are payable within <mark>forty-five (45) days</mark> of receipt. [Master clause 9 says thirty (30) days.]"},
+ {k:"Liability limit",v:"Fees paid in the last 12 months",st:"low",sh:"carve-outs not read",why:"The carve-outs were not read. Low confidence.",doc:"Master, clause 17.1",src:"Total liability is limited to <mark>the fees paid in the twelve (12) months before the claim</mark>, except as stated in 17.3. [17.3 not yet read]"},
+ {k:"Governing law",v:"Indian law, courts at Ahmedabad",st:"ok",doc:"Master, clause 22",src:"This Agreement is governed by the <mark>laws of India</mark>. Courts at <mark>Ahmedabad</mark> have exclusive jurisdiction."}
+];
+var FCACHE={kaveri:KF};
+function lc(x){return x.charAt(0).toLowerCase()+x.slice(1)}
+function FF(id){
+ id=id||S.cid;if(FCACHE[id])return FCACHE[id];
+ var sp=SPEC[id],r=ROWS.filter(function(x){return x.id===id})[0],main=sp.docs[0][1],second=(sp.docs[1]||sp.docs[0])[1];
+ var te=fmt(new Date(r.d.getTime()+sp.notice*864e5));
+ var raw=[
+  ["Notice to stop renewal",sp.notice+" days before the end of the term",main+", clause 14.2","Either party may stop the renewal by giving <mark>"+words(sp.notice)+" days</mark> written notice before the end of the then current term."],
+  ["Current term ends",te,main+", clause 3","The term of this agreement ends on <mark>"+te+"</mark> unless renewed under clause 14."],
+  ["Renewal","Renews by itself, 1 year at a time",main+", clause 14.1","The agreement <mark>renews automatically for successive periods of one (1) year</mark> unless notice is given under 14.2."],
+  ["Price change",sp.price,second+", schedule B","Pricing is as follows: <mark>"+lc(sp.price)+"</mark>."],
+  ["Service level",sp.sl,main+", schedule C",sp.sl.indexOf("No service")===0?"This agreement <mark>does not state a service level</mark>.":"The supplier shall meet the following level: <mark>"+lc(sp.sl)+"</mark>. Credits apply as set out in the schedule."],
+  ["Payment terms",sp.pay,main+", clause 9","Invoices are payable <mark>"+lc(sp.pay)+"</mark>."],
+  ["Liability limit",sp.liab,main+", clause 17.1","Total liability is limited to <mark>"+lc(sp.liab)+"</mark>, except as stated in 17.3."],
+  ["Governing law","Indian law, courts at "+sp.city,main+", clause 22","This agreement is governed by the <mark>laws of India</mark>. Courts at <mark>"+sp.city+"</mark> have exclusive jurisdiction."]
+ ];
+ FCACHE[id]=raw.map(function(x,i){
+  var f={k:x[0],v:x[1],doc:x[2],src:x[3],st:"ok"};
+  if(sp.flag.indexOf(i)>=0){f.st=(i===3||i===6)?"low":"chk";f.sh=FLAG[i][0];f.why=FLAG[i][1]}
+  return f;
+ });
+ return FCACHE[id];
+}
+function termEnd(id){id=id||S.cid;if(id==="kaveri")return"30 Jun 2027";var r=ROWS.filter(function(x){return x.id===id})[0];return fmt(new Date(r.d.getTime()+SPEC[id].notice*864e5))}
+function rowOf(id){return ROWS.filter(function(x){return x.id===id})[0]}
+
+/* service levels: Kaveri has the worked example; four others are measured too */
+var PM=["Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun"];
+var OBLS=[
+ {id:"kaveri",t:"On-time delivery, at least 96% a month",title:"On-time delivery",clause:"SOW 2, schedule C",level:96,unit:"%",dir:"min",vals:[95,97,94,96,93,91,96,95,92,96,94,93],lo:88,hi:100,inv:15.0,pct:2},
+ {id:"surat",t:"On-time delivery, at least 95% a lane",title:"On-time delivery",clause:"Lane Schedule",level:95,unit:"%",dir:"min",vals:[96,97,96,98,97,96,95,97,96,98,97,96],lo:90,hi:100,inv:9.2,pct:2},
+ {id:"saurashtra",t:"Delivery temperature, at most 5°C",title:"Delivery temperature",clause:"Supply Agreement, schedule C",level:5,unit:"°C",dir:"max",vals:[4.1,4.3,4.0,4.4,4.2,4.5,4.3,4.1,4.4,4.2,4.0,4.3],lo:0,hi:6,inv:17.5,pct:0},
+ {id:"cloudbill",t:"Uptime, at least 99.5% a month",title:"Uptime",clause:"SaaS Order Form, schedule 2",level:99.5,unit:"%",dir:"min",vals:[99.9,99.8,99.9,99.7,99.9,99.2,99.8,99.9,99.7,99.9,99.8,99.9],lo:98.5,hi:100,inv:3.3,pct:5},
+ {id:"mehsana",t:"Moisture at receipt, at most 4%",title:"Moisture at receipt",clause:"Supply Agreement, schedule C",level:4,unit:"%",dir:"max",vals:[3.6,3.8,3.7,3.9,3.6,3.7,3.8,3.5,3.7,3.9,3.6,3.8],lo:0,hi:5,inv:26.7,pct:0}
+];
+function obOf(id){return OBLS.filter(function(o){return o.id===id})[0]}
+function miss(o,v){return o.dir==="min"?v<o.level:v>o.level}
+function missed(o){return o.vals.filter(function(v){return miss(o,v)}).length}
+function avgOf(o){var a=o.vals.reduce(function(x,y){return x+y},0)/o.vals.length;return o.id==="kaveri"?Math.round(a):Math.round(a*10)/10}
+function creditOne(o){return o.inv*o.pct/100}
+function creditAll(o){return creditOne(o)*missed(o)}
+var LEVEL=96, INV=15.0, CREDIT_PCT=2, PERF=OBLS[0].vals;
+function below(){return missed(OBLS[0])}
+function avgPerf(){return avgOf(OBLS[0])}
+function creditEach(){return creditOne(OBLS[0])}
+function creditTot(){return creditAll(OBLS[0])}
+function rs(x){return "₹"+Math.round(x*1e5).toLocaleString("en-IN")}
+function lakh(x){return "₹"+x.toFixed(1)+" L"}
+function mny(x){return x>=1?lakh(x):rs(x)}
+function cr(x){return "₹"+x.toFixed(1)+" Cr"}
+function nf(v){return v%1?v.toFixed(1):String(v)}
+
+/* ================= state ================= */
+function fresh(){return {ck:0,rq:"",screen:"radar",tab:"overview",cid:"kaveri",c:{},sel:0,ask:0,askId:"kaveri",qtxt:"",oid:null,obl:false,rf:"all",rt:"need",pick:false,edit:false,modal:null,dirty:false,last:null}}
+var S=fresh();
+S.tour=null;S.step=0;S.welcome=true;S.notes=true;S.pin=null;S.done=false;S.toast=null;
+function reset(){var k={notes:S.notes};Object.assign(S,fresh());TODAY=STOPS[0];S.tour=null;S.step=0;S.welcome=false;S.notes=k.notes;S.pin=null;S.done=false;S.toast=null}
+function cs(id){
+ id=id||S.cid;
+ if(!S.c[id]){var o=SPEC[id].own;S.c[id]={acc:null,own:null,accOn:null,fd:{},fv:{},val:{},dec:"",why:"",rec:false,log:[["4 Jul 2026",o?"Alert sent to "+PEOPLE[o].n:"No owner on record. Nothing was alerted"]]}}
+ return S.c[id];
+}
+function ownerOf(id){id=id||S.cid;var c=cs(id);return c.own?PEOPLE[c.own]:(SPEC[id].own?PEOPLE[SPEC[id].own]:null)}
+function ownerName(id){var o=ownerOf(id);return o?o.n:"Nobody"}
+function ownState(id){
+ var c=cs(id),r=rowOf(id);
+ if(c.own)return c.acc===true?"ok":"wait";
+ if(c.acc===true)return "ok";
+ return r.o;
+}
+function assign(id,pk,why){var c=cs(id);c.own=pk;c.acc=false;c.log.push([td(),PEOPLE[pk].n+" named as owner"+(why?", "+why:"")+". Alert sent"])}
+function applyLeft(){var c=cs("kaveri");if(c.own!=="pn"){c.own="pn";c.acc=false;c.log.push([td(),"Rohan Shah left Tea Post. Alert moved to Priya Nair, his manager"])}}
+function fOK(i,id){return FF(id)[i].st==="ok"||!!cs(id).fv[i]}
+function verN(id){var n=0;FF(id).forEach(function(_,i){if(fOK(i,id))n++});return n}
+function fVal(i,id){var c=cs(id);return c.val[i]!==undefined?c.val[i]:FF(id)[i].v}
+function rows(){return ROWS.map(function(r){return Object.assign({},r,{o:ownState(r.id),vn:verN(r.id)})})}
+function stats(){
+ var R=rows(),n=R.length,t={n:n};
+ t.acc=R.filter(function(r){return r.o==="ok"}).length;
+ t.none=R.filter(function(r){return r.o==="none"}).length;
+ t.wait=n-t.acc;
+ t.soon=R.filter(function(r){return dleft(r.d)>=0&&dleft(r.d)<=180}).length;
+ t.passed=R.filter(function(r){return dleft(r.d)<0&&!cs(r.id).rec}).length;
+ t.unv=R.filter(function(r){return r.vn<8}).length;
+ t.tot=R.reduce(function(a,r){return a+r.val},0);
+ t.due12=R.filter(function(r){return dleft(r.d)>=0&&dleft(r.d)<=365}).reduce(function(a,r){return a+r.val},0);
+ return t;
+}
+function unverifiedList(id){return FF(id).map(function(f,i){return {f:f,i:i}}).filter(function(x){return !fOK(x.i,id)})}
+
+/* ================= small pieces ================= */
+function chipO(o){return '<span class="chip '+OWN[o][0]+'"><i class="dot"></i>'+OWN[o][1]+'</span>'}
+function chipF(st){var m={ok:["ok","Verified"],chk:["chk","Needs a check"],low:["low","Low confidence"]}[st];return '<span class="chip '+m[0]+'">'+m[1]+'</span>'}
+function head(icon,title,sub,btns){return '<div class="phead"><div class="tile">'+svg(icon)+'</div><div><h1>'+title+'</h1><p>'+sub+'</p></div><div class="spacer"></div>'+(btns||"")+'</div>'}
+function nb(label,cls,msg){return '<button class="btn'+(cls?" "+cls:"")+'" data-toast="'+esc(msg||"Not built in this prototype")+'">'+label+'</button>'}
+function sb(label,note,cls){return '<button class="btn'+(cls?" "+cls:"")+'" data-send="'+esc(note)+'">'+label+'</button>'}
+function daysChip(dl){if(dl<0)return '<span class="chip none">Passed</span>';return dl<=180?'<span class="chip none">'+dl+' days</span>':'<span style="color:var(--muted)">'+dl+' days</span>'}
+function empty(cols,title,text,btn){return '<tr><td colspan="'+cols+'" style="padding:18px"><div class="empty"><b>'+title+'</b>'+text+(btn?'<div style="margin-top:10px">'+btn+'</div>':'')+'</div></td></tr>'}
+function sup(r){return '<a class="rowlink" href="#" data-open="'+r.id+'">'+esc(r.s)+'</a>'}
+
+/* ================= pages ================= */
+function radar(){
+ var s=stats(),R=rows();
+ var QS=[["Q3 2026",2026,6],["Q4 2026",2026,9],["Q1 2027",2027,0],["Q2 2027",2027,3],["Q3 2027",2027,6]];
+ function qOf(d){var y=d.getFullYear(),m=d.getMonth();for(var i=QS.length-1;i>=0;i--){if(y>QS[i][1]||(y===QS[i][1]&&m>=QS[i][2]))return QS[i][0]}return QS[0][0]}
+ var OC={ok:"var(--teal)",wait:"var(--yellow)",none:"var(--coral)"};
+ var h=head("radar","Renewal radar","Every signed contract with a renewal date, ordered by the day we must act.",nb("Export","","Export is not built in this prototype")+" "+nb("Configure alerts","mint","Alert rules are shown on each contract's Overview"));
+ h+='<div class="stats" id="statstrip">';
+ h+='<div class="stat'+(s.passed?' warn':'')+'"><div class="n">'+s.soon+' <s>of '+s.n+'</s></div><div class="t">Decisions due in 180 days'+(s.passed?' ('+s.passed+' passed without a decision)':'')+'</div></div>';
+ h+='<div class="stat" id="stat-cov"><div class="n">'+s.acc+' <s>of '+s.n+'</s></div><div class="t">Owner named and accepted</div></div>';
+ h+='<div class="stat warn"><div class="n">'+s.wait+'</div><div class="t">Waiting on an owner ('+s.none+' with none at all)</div></div>';
+ h+='<div class="stat"><div class="n">'+s.unv+'</div><div class="t">Records with fields still unverified</div></div></div>';
+ var FILT=[["all","All"],["soon","Due in 180 days"],["wait","Waiting on an owner"],["none","No owner"]];
+ var shown=R.filter(function(r){return S.rf==="soon"?dleft(r.d)>=0&&dleft(r.d)<=180:S.rf==="wait"?r.o!=="ok":S.rf==="none"?r.o==="none":true});
+ h+='<div class="cols"><div class="card" id="tbl"><div class="hd"><h3>Upcoming renewals</h3><span class="chip teal">Sorted by notice deadline</span><div class="spacer"></div><div class="seg">'+FILT.map(function(f){return '<button data-rf="'+f[0]+'" class="'+(S.rf===f[0]?"on":"")+'">'+f[1]+'</button>'}).join("")+'</div></div>';
+ h+='<table><thead><tr><th>Supplier</th><th>Agreement</th><th>Notice deadline</th><th>Act within</th><th>Owner</th><th>Verified</th><th style="text-align:right">Annual value</th></tr></thead><tbody>';
+ shown.forEach(function(r){
+  h+='<tr'+(r.hot?' class="hot" id="row-kaveri"':'')+'><td>'+sup(r)+'<div class="sub">'+esc(r.c)+'</div></td>';
+  h+='<td style="color:var(--muted);font-size:12.5px">'+esc(r.a)+'</td><td class="num">'+fmt(r.d)+'</td><td class="num">'+daysChip(dleft(r.d))+'</td><td>'+chipO(r.o)+'</td>';
+  h+='<td class="num" style="color:var(--muted)">'+r.vn+'/8</td><td class="num" style="text-align:right">'+cr(r.val)+'</td></tr>';
+ });
+ if(!shown.length)h+=empty(7,"Nothing matches this filter",S.rf==="none"?"Every drawn contract has a named owner.":S.rf==="soon"?"No decision is due in the next 180 days.":"Try another filter.",'<button class="btn sm" data-rf="all">Show all</button>');
+ h+='</tbody></table><div class="tfoot">'+(S.rf==="all"?s.n+' of Tea Post\'s 2,480 contracts are drawn here. ':'Showing '+shown.length+' of '+s.n+'. ')+'Open any supplier to see its record.</div></div>';
+ h+='<div style="display:grid;gap:16px"><div class="card chart" id="chart"><div class="hd"><h3>Cover by renewal quarter</h3></div><div class="bd">';
+ var maxQ=1;QS.forEach(function(q){var t=R.filter(function(r){return qOf(r.d)===q[0]}).reduce(function(a,b){return a+b.val},0);if(t>maxQ)maxQ=t});
+ QS.filter(function(q){return R.some(function(r){return qOf(r.d)===q[0]})}).forEach(function(q){
+  var rs2=R.filter(function(r){return qOf(r.d)===q[0]}),tot=rs2.reduce(function(a,b){return a+b.val},0);
+  h+='<div class="row"><span>'+q[0]+'</span><div class="bar" style="width:'+(tot/maxQ*100)+'%">';
+  ["none","wait","ok"].forEach(function(k){var w=rs2.filter(function(r){return r.o===k}).reduce(function(a,x){return a+x.val},0);if(w>0)h+='<i style="width:'+(w/tot*100)+'%;background:'+OC[k]+'"></i>'});
+  h+='</div></div>';
+ });
+ h+='<div class="legend"><span><b style="background:var(--teal)"></b>Owner accepted</span><span><b style="background:var(--yellow)"></b>Not accepted</span><span><b style="background:var(--coral)"></b>No owner</span></div>';
+ h+='<p style="margin:9px 0 0;font-size:11.5px;color:var(--faint)">Bar length is annual value. '+cr(s.due12)+' of the '+cr(s.tot)+' shown has a notice deadline in the next 12 months.</p></div></div>';
+ h+='<div class="card"><div class="hd"><h3>No owner at all</h3><span class="chip none">'+s.none+'</span></div><div class="bd" style="padding-top:11px">';
+ R.filter(function(r){return r.o==="none"}).forEach(function(r){
+  h+='<div class="kv" style="padding:7px 0;border-bottom:1px solid var(--line2)"><div><b>'+esc(r.s)+'</b><div class="sub" style="font-size:11.5px;color:var(--muted)">Last owner left in '+r.lo+'</div></div><button class="btn sm" data-open="'+r.id+'">Assign</button></div>';
+ });
+ if(!s.none)h+='<p style="margin:0;font-size:13px;color:var(--ink2)">Every drawn contract has a named owner.</p>';
+ else h+='<p style="margin:11px 0 0;font-size:12.5px;color:var(--muted)">These cannot be alerted to anyone. They sit here until a person is named.</p>';
+ h+='</div></div></div></div>';
+ return h;
+}
+
+function repo(){
+ var R0=rows(),T=[["all","All contracts",R0.length],["need","Needs verification",R0.filter(function(r){return r.vn<8}).length],["none","Unowned",R0.filter(function(r){return r.o==="none"}).length]];
+ var R=R0.filter(function(r){return (S.rt==="need"?r.vn<8:S.rt==="none"?r.o==="none":true)&&(!S.rq||r.s.toLowerCase().indexOf(S.rq.toLowerCase())>=0)}).sort(function(a,b){return a.d-b.d||b.val-a.val});
+ var h=head("repo","Repository","2,480 contracts. "+R0.length+" are drawn here, the ones with a renewal in the next 15 months.",nb("Upload","","Upload is not built in this prototype")+" "+nb("New contract","mint","Contract creation is not built in this prototype"));
+ h+='<div class="tabs" id="rtabs">'+T.map(function(t){return '<button data-rtab="'+t[0]+'" class="'+(S.rt===t[0]?"on":"")+'">'+t[1]+' <span class="cn">'+t[2]+'</span></button>'}).join("")+'</div>';
+ h+='<div class="card" id="queue"><div class="hd"><h3>'+(S.rt==="need"?"Verification queue":S.rt==="none"?"Contracts with no owner":"All contracts")+'</h3><span class="chip teal">Ordered by notice deadline, then value</span><div class="spacer"></div>'+(S.rt==="need"?'<span class="nofig">Meera Joshi, Legal</span>':'')+'<input class="in" id="rq" placeholder="Filter by supplier" value="'+esc(S.rq)+'" aria-label="Filter by supplier" style="width:180px;padding:5px 9px;font-size:12.5px"></div>';
+ h+='<table><thead><tr><th>Supplier</th><th>Fields to check</th><th>What needs a person</th><th>Notice deadline</th><th>Act within</th><th>Owner</th><th style="text-align:right">Annual value</th></tr></thead><tbody>';
+ R.forEach(function(r){
+  var left=8-r.vn,u=unverifiedList(r.id),why=u.length?u.map(function(x){return esc(x.f.k.toLowerCase())}).slice(0,3).join(", ")+(u.length>3?" and "+(u.length-3)+" more":""):'<span style="color:var(--faint)">Nothing</span>';
+  h+='<tr'+(r.hot?' class="hot"':'')+' id="q-'+r.id+'"><td>'+sup(r)+'<div class="sub">'+esc(r.a)+'</div></td>';
+  h+='<td class="num"><b>'+left+'</b> <span style="color:var(--muted)">of 8</span></td><td style="font-size:12.5px;color:var(--ink2);max-width:250px">'+why+'</td><td class="num">'+fmt(r.d)+'</td><td class="num">'+daysChip(dleft(r.d))+'</td><td>'+chipO(r.o)+'</td><td class="num" style="text-align:right">'+cr(r.val)+'</td></tr>';
+ });
+ if(!R.length)h+=S.rq?empty(7,"No contract matches “"+esc(S.rq)+"”","Only the "+R0.length+" drawn contracts can be filtered here.",'<button class="btn sm" data-a="clearrq">Clear filter</button>'):empty(7,S.rt==="need"?"Nothing needs verification":"Every drawn contract has an owner",S.rt==="need"?"Every field on every drawn contract has been checked by a person.":"Nobody is waiting to be named.",'<button class="btn sm" data-rtab="all">See all contracts</button>');
+ h+='</tbody></table><div class="tfoot">Open a supplier to see each field next to the words it was read from.</div></div>';
+ return h;
+}
+
+function crumbHead(){
+ var id=S.cid,r=rowOf(id),sp=SPEC[id],n=sp.signed||sp.docs.length;
+ var h=head("repo",esc(r.s)+(id==="kaveri"?" Pvt Ltd":""),esc(r.a)+" · "+n+" signed document"+(n>1?"s":"")+(id==="kaveri"?" and 1 email":"")+" · "+esc(r.c)+" · "+cr(r.val)+" a year",'<button class="btn" data-a="docs">Open documents</button> <button class="btn mint" data-askc="'+id+'">Ask about this contract</button>');
+ var T=[["overview","Overview"],["terms","Terms today"],["reading","Reading"],["decision","Decision"]];
+ h+='<div class="tabs" id="ctabs">'+T.map(function(t){
+  var cn=t[0]==="reading"&&verN(id)<8?' <span class="cn">'+(8-verN(id))+'</span>':'';
+  return '<button data-tab="'+t[0]+'" class="'+(S.tab===t[0]?"on":"")+'">'+t[1]+cn+'</button>';
+ }).join("")+'</div>';
+ return h;
+}
+
+function personList(id){
+ return '<div class="plist">'+PICKABLE.map(function(k){var p=PEOPLE[k];return '<button class="pp" data-pickp="'+k+'"><span class="av2">'+p.i+'</span><span><b>'+p.n+'</b><s>'+p.r+'</s></span></button>'}).join("")+'</div>';
+}
+
+function tabOverview(){
+ var id=S.cid,r=rowOf(id),sp=SPEC[id],c=cs(id),o=ownerOf(id),st=ownState(id),dl=dleft(r.d),dstr=fmt(r.d),k=id==="kaveri",h="";
+ var stg=escStage(),passed=dl<0,renew="has most likely renewed for another year at about "+cr(r.val),unacc=o&&st!=="ok";
+ var cls=st==="ok"&&!passed?"alert good":"alert",ttl,txt;
+ if(passed){
+  if(c.rec&&c.dec==="Do not renew"){ttl="The notice date has passed. Confirm the notice was sent";txt="The notice window closed on <b>"+dstr+"</b>. Confirm with Legal that the notice reached "+esc(r.s)+" by that date. If it did not, the agreement "+renew+".";}
+  else if(c.rec){ttl="Decision recorded after the notice date";txt="The notice window closed on <b>"+dstr+"</b>, so the agreement with "+esc(r.s)+" "+renew+". The decision below applies to the next term.";}
+  else {ttl="The notice date has passed with no decision";txt="The notice window closed on <b>"+dstr+"</b>. The agreement with "+esc(r.s)+" "+renew+". "+(o?"Record what was decided so next year's owner has it.":"No owner was named, so nobody was alerted.");}
+ } else if(c.rec){ttl="Decision recorded: "+c.dec;txt=k&&c.dec==="Do not renew"?"The reason is kept with the contract. Legal has a drafted notice to check.":"The reason is kept with the contract for next year's owner.";}
+ else if(!o){ttl="No owner, so nobody is alerted";txt="Notice must reach "+esc(r.s)+" by <b>"+dstr+"</b> or the agreement renews for another year at about "+cr(r.val)+". Name an owner to start the alert.";}
+ else if(st==="ok"){ttl="Ownership accepted";txt=o.n+" accepted ownership on "+(c.accOn||"4 Jul")+". Notice must still reach "+esc(r.s)+" by <b>"+dstr+"</b>, or the agreement renews for another year at about "+cr(r.val)+".";}
+ else {
+  ttl=stg===0?(dl<=180?"A renewal decision is due":"A renewal decision is coming up"):stg===1?"No answer yet. A reminder has gone out":stg===2?"Still no answer. The head of department has been asked":"Still no answer. This is on the CPO's unowned list";
+  txt="Notice must reach "+esc(r.s)+" by <b>"+dstr+"</b> or the agreement renews for another year at about "+cr(r.val)+". "+o.n+" is named as owner and has not yet accepted."+(stg===1?" Their manager and Procurement were copied on "+STG_ON[1]+".":stg===2?" The head of department was asked on "+STG_ON[2]+" to name someone who will.":stg===3?" It has been listed since "+STG_ON[3]+".":"");
+ }
+ h+='<div class="'+cls+'" id="alertbar"><div style="flex:1"><h3>'+esc(ttl)+'</h3><p>'+txt+'</p></div><div class="d"><b>'+Math.abs(dl)+'</b><s>'+(dl<0?'days ago':'days to act')+'</s></div></div>';
+ h+='<div class="cols"><div><div style="display:flex;align-items:center;gap:9px;margin-bottom:11px"><span class="lbl">Context pack</span><span class="chip teal">Built from '+(sp.signed||sp.docs.length)+' signed document'+((sp.signed||sp.docs.length)>1?'s':'')+(k?' and 1 email':'')+'</span></div><div class="pack" id="pack">';
+ h+='<div class="pk"><h4>'+svg("rupee")+'What we pay</h4><div class="kv"><s>Annual value</s><b>'+cr(r.val)+'</b></div><div class="kv"><s>Price change</s><b>'+esc(sp.price)+(fOK(3,id)?'':' <span class="chip low">check</span>')+'</b></div>';
+ h+='<div class="kv"><s>Payment</s><b>'+esc(k?sp.pay:fVal(5,id))+' '+(fOK(5,id)?'':'<span class="chip chk">check</span>')+'</b></div><div class="kv"><s>Term ends</s><b>'+termEnd(id)+'</b></div></div>';
+ h+='<div class="pk"><h4>'+svg("swap")+'What changed since signing</h4>';
+ if(sp.changes.length){h+='<ul>'+sp.changes.map(function(x,i){return '<li>'+esc(x)+(k&&i===1?' <span class="chip flag" style="margin-left:4px">unpapered</span>':'')+'</li>'}).join("")+'</ul>';
+  if(k)h+='<p style="margin:9px 0 0;font-size:12px;color:var(--muted)">The discount is in an email, not a signed document. It is not part of the contract.</p>'}
+ else h+='<p style="margin:0;font-size:13px;color:var(--muted)">No amendments or side emails on file. The terms are as signed.</p>';
+ h+='</div>';
+ var ob=obOf(id);
+ if(ob){var m=missed(ob);
+  h+='<div class="pk"><h4>'+svg("gauge")+'How they have performed</h4><div style="display:flex;align-items:baseline;gap:9px;margin:2px 0 9px"><span style="font-size:26px;font-weight:600;letter-spacing:-.02em">'+nf(avgOf(ob))+ob.unit+'</span><span style="font-size:12.5px;color:var(--muted)">12-month average, '+(ob.dir==="min"?"promised at least ":"allowed at most ")+'<b style="color:var(--ink2)">'+nf(ob.level)+ob.unit+'</b></span></div>';
+  h+='<div style="display:flex;gap:3px;height:26px;align-items:flex-end">'+ob.vals.map(function(v){return '<i style="flex:1;height:'+(4+(v-ob.lo)/(ob.hi-ob.lo)*22)+'px;border-radius:2px;background:'+(miss(ob,v)?"var(--coral)":"var(--sea)")+';display:block"></i>'}).join("")+'</div>';
+  h+='<p style="margin:8px 0 0;font-size:12px;color:var(--muted)">'+(m?m+' of 12 months missed. '+mny(creditAll(ob))+' of credits never claimed.':'Met in all 12 months. No credit due.')+' <a href="#" data-go="obl:'+id+'">See the months</a></p></div>';
+ } else h+='<div class="pk q"><h4>'+svg("gauge")+'How they have performed</h4><p style="margin:0;font-size:13px;color:var(--muted)">No service level is measured for this contract.</p></div>';
+ var u=unverifiedList(id);
+ h+='<div class="pk q" id="unverified"><h4>'+svg("eye")+'Not yet verified</h4>';
+ if(u.length)h+='<ul>'+u.map(function(x){return '<li><span><b>'+esc(x.f.k)+'</b>, '+esc(x.f.sh)+'</span></li>'}).join("")+'</ul><p style="margin:9px 0 0;font-size:12px;color:var(--muted)">Shown so you know what not to lean on. <a href="#" data-tab="reading">See the words each came from</a></p>';
+ else h+='<p style="margin:0;font-size:13px;color:var(--ink2)">All 8 fields on this contract have been verified by a person.</p>';
+ h+='</div></div></div>';
+ h+='<div style="display:grid;gap:16px"><div class="card" id="ownercard"><div class="hd"><h3>Owner</h3>'+chipO(st)+'</div><div class="bd">';
+ if(!o||S.pick){
+  h+='<p style="margin:0 0 10px;font-size:13px;color:var(--ink2)">'+(o?'Choose the person who should own this renewal.':'Nobody is named. Choose an owner and the alert goes to them.')+'</p>'+personList(id)+(o?'<button class="btn sm ghost" data-a="cancelpick" style="margin-top:8px">Cancel</button>':'');
+ } else {
+  h+='<div class="owner"><div class="av">'+o.i+'</div><div class="nm">'+o.n+'</div><div class="ro">'+o.r+'</div></div>';
+  if(st==="ok")h+='<div style="display:flex;gap:8px;margin-top:14px"><button class="btn" style="flex:1" data-a="reassign">Reassign</button></div><p style="margin:11px 0 0;font-size:12.5px;color:var(--muted);text-align:center">Accepted '+(c.accOn||"4 Jul 2026")+'. Escalation stopped.</p>';
+  else h+='<div style="display:flex;gap:8px;margin-top:14px"><button class="btn pri" style="flex:1" data-a="accept">Accept</button><button class="btn" style="flex:1" data-a="reassign">Reassign</button></div><p style="margin:11px 0 0;font-size:12px;color:var(--muted);text-align:center">'+(stg===0?(k&&c.own==="pn"?"Moved from Rohan Shah, who left Tea Post. Reminder due 18 Jul.":"Alerted 4 Jul. Reminder due 18 Jul."):stg===1?"Reminder sent "+STG_ON[1]+". Manager and Procurement copied.":stg===2?"Head of department asked on "+STG_ON[2]+" to name an owner.":"On the CPO\'s unowned list since "+STG_ON[3]+".")+'</p>';
+ }
+ h+='</div></div>';
+ h+='<div class="card"><div class="hd"><h3>If nobody answers</h3>'+(st==="ok"?'<span class="chip ok">Stopped</span>':!o?'<span class="chip none">Not started</span>':'')+'</div><div class="bd"><ul class="tl">';
+ [["Day 0",!o?"Needs a named owner":(k&&c.own==="pn"?"Alert moved to Priya Nair, with a note":"Alert to "+o.n)],["Day 14","Reminder. Manager and Procurement copied"],["Day 30","Head of department asked to name an owner"],["Day 60","Appears on the CPO\'s unowned list"]].forEach(function(x,i){
+  var cl=!o?"future":i===0?"done":st==="ok"?"future":i<=stg?"done":i===stg+1?"now":"future";
+  h+='<li class="'+cl+'"><span class="pip"></span><div><b>'+x[0]+'</b><s>'+x[1]+'</s></div></li>';
+ });
+ h+='</ul></div></div>';
+ h+='<div class="card"><div class="hd"><h3>Documents</h3></div><div class="bd" style="padding:6px 16px 12px"><ul class="docs">';
+ sp.docs.forEach(function(d,i){var t=d[0]==="ml"?"EML":d[0]==="doc"?"DOC":"PDF";
+  h+='<li class="dl" data-doc="'+i+'" tabindex="0" role="button"><span class="ft '+d[0]+'">'+t+'</span><div><div>'+esc(d[1])+'</div><s>'+esc(d[2])+'</s></div></li>';
+ });
+ return h+'</ul></div></div></div></div>';
+}
+
+function tabTerms(){
+ var id=S.cid,k=id==="kaveri",sp=SPEC[id],f=FF(id),h='<div class="card" id="termtbl"><div class="hd"><h3>Terms that apply today</h3><span class="chip teal">As of '+fmt(TODAY)+'</span><div class="spacer"></div><span class="nofig">Anita Pillai, Procurement</span></div>';
+ var stack=sp.docs.map(function(d){return '<span class="chip'+(d[0]==="ml"?' flag':'')+'">'+esc(d[1])+'</span>'});
+ h+='<div style="padding:12px 16px;border-bottom:1px solid var(--line2);display:flex;gap:9px;align-items:center;flex-wrap:wrap;font-size:12.5px" id="stack"><span class="lbl">Document stack</span>'+stack.join("→")+'</div>';
+ h+='<table><thead><tr><th>Term</th><th>Applies today</th><th>Comes from</th><th>What it replaced</th></tr></thead><tbody>';
+ function row(i,applies,from,was){h+='<tr><td><b>'+esc(f[i].k)+'</b></td><td>'+applies+' '+(fOK(i,id)?'':chipF(f[i].st))+'</td><td>'+esc(from)+'</td><td style="color:var(--muted)">'+was+'</td></tr>'}
+ if(k){
+  h+='<tr><td><b>Notice to stop renewal</b></td><td><b>180 days</b> (deadline 31 Dec 2026) '+(fOK(0,id)?'':chipF("chk"))+'</td><td>Amendment 1, clause 2</td><td style="color:var(--muted)">90 days in the Master, clause 14.2. Changed 1 Oct 2025.</td></tr>';
+  row(5,"45 days","SOW 2, clause 6","The Master said 30 days. Which document wins is not yet confirmed.");
+  row(3,"Index-linked, max 6%","SOW 2, schedule B (scan)","Next change 1 Apr 2027.");
+  h+='<tr><td><b>On-time level</b></td><td>'+LEVEL+'% a month, '+CREDIT_PCT+'% credit</td><td>SOW 2, schedule C</td><td style="color:var(--muted)">Unchanged since 1 Jan 2025.</td></tr>';
+  h+='<tr id="unpapered" style="background:#FDFAFB"><td><b>Volume discount</b></td><td><span class="chip flag">Unpapered</span> 3% above 50,000 cups a month</td><td>Email from Kaveri, 12 Mar 2026</td><td style="color:var(--muted)">In no signed document. Not a term unless Legal papers it.</td></tr>';
+ } else {
+  var ch=sp.changes[0];
+  [[0,fVal(0,id)+" before the end of the term"],[5,fVal(5,id)],[3,fVal(3,id)],[4,fVal(4,id)],[6,fVal(6,id)]].forEach(function(x){
+   row(x[0],x[0]===0?"<b>"+sp.notice+" days</b> (deadline "+fmt(rowOf(id).d)+")":esc(x[1]),f[x[0]].doc.split(",")[0],ch&&(x[0]===3||x[0]===4)&&sp.docs.length>1?esc(ch):"As signed. Not changed since.");
+  });
+ }
+ h+='</tbody></table><div class="tfoot" style="display:flex;gap:8px;align-items:center">';
+ h+=k?sb("Ask Legal to paper the discount","Asked Legal to paper the 3% discount","sm")+'<button class="btn sm" data-doc="3">Open the email</button>':sb("Ask Legal to check these terms","Asked Legal to check the terms read for "+rowOf(id).s,"sm");
+ return h+'</div></div>';
+}
+
+function tabReading(){
+ var id=S.cid,F2=FF(id),i0=S.sel,f=F2[i0],ok=fOK(i0,id),c=cs(id);
+ var h='<div class="split wide"><div class="card" id="flist"><div class="hd"><h3>What was read</h3><span class="chip teal">'+verN(id)+' of 8 verified</span></div><table><thead><tr><th>Term</th><th>What was read</th><th>Status</th></tr></thead><tbody>';
+ F2.forEach(function(x,i){h+='<tr class="clk'+(i===i0?' sel':'')+'" data-sel="'+i+'"><td><b>'+esc(x.k)+'</b></td><td style="font-size:12.5px;color:var(--ink2)">'+esc(fVal(i,id))+'</td><td>'+chipF(fOK(i,id)?"ok":x.st)+'</td></tr>'});
+ h+='</tbody></table></div>';
+ h+='<div class="card" id="srcpane"><div class="hd"><h3>Source text</h3>'+chipF(ok?"ok":f.st)+'</div><div class="bd"><div class="lbl" style="margin-bottom:6px">'+esc(f.k)+'</div><div class="quote"><span class="src">'+esc(f.doc)+'</span>'+f.src+'</div>';
+ if(f.why&&!ok)h+='<p style="margin:12px 0 0;font-size:13px"><b>Why flagged.</b> '+esc(f.why)+'</p>';
+ if(ok&&c.fv[i0])h+='<p style="margin:12px 0 0;font-size:13px;color:var(--muted)">'+(c.val[i0]!==undefined?'Edited and accepted':'Accepted')+' by Meera Joshi, '+(c.fd[i0]||"4 Jul 2026")+'.</p>';
+ if(S.edit)h+='<label class="fld" for="editv">Correct value</label><input class="in" id="editv" value="'+esc(fVal(i0,id))+'"><div style="display:flex;gap:8px;margin-top:12px"><button class="btn pri" data-a="saveedit">Save and accept</button><button class="btn" data-a="canceledit">Cancel</button></div>';
+ else h+='<div style="display:flex;gap:8px;margin-top:15px"><button class="btn pri" data-a="accf"'+(ok?' disabled style="opacity:.45;cursor:default"':'')+'>Accept as read</button><button class="btn" data-a="edit">Edit value</button>'+sb("Ask Legal counsel","Question on "+f.k.toLowerCase()+" sent to Legal counsel")+'</div>';
+ return h+'</div></div></div>';
+}
+
+var OPTS=["Renew as it is","Renew and renegotiate","Do not renew"];
+function tabDecision(){
+ var id=S.cid,r=rowOf(id),c=cs(id),o=ownerOf(id),k=id==="kaveri";
+ var h='<div class="split"><div style="display:grid;gap:16px"><div class="card"><div class="hd"><h3>Your decision on '+esc(r.s)+'</h3>'+(c.rec?'<span class="chip ok">Recorded</span>':'')+'</div><div class="bd">';
+ OPTS.forEach(function(x){h+='<button class="opt'+(c.dec===x?' on':'')+'" data-opt="'+esc(x)+'"'+(c.rec?' disabled':'')+'><span class="rd"></span>'+esc(x)+'</button>'});
+ if(dleft(r.d)<0)h+='<p style="margin:0 0 12px;font-size:12.5px;color:var(--bad,#B3402F);background:#FBEDEA;border-radius:8px;padding:9px 11px">The notice date, '+fmt(r.d)+', has passed. A decision recorded now applies to the next term, not this one.</p>';
+ h+='<label class="fld" for="why">Why. Kept with the contract for next year\'s owner.</label><textarea id="why" rows="3" placeholder="One or two lines"'+(c.rec?' disabled':'')+'>'+esc(c.why)+'</textarea>';
+ h+='<div style="margin-top:13px;display:flex;gap:8px"><button class="btn pri" data-a="rec"'+(c.rec||!c.dec?' disabled style="opacity:.45;cursor:default"':'')+'>Record decision</button>'+(c.rec?'<button class="btn" data-a="reopen">Reopen decision</button>':'')+'</div>';
+ if(!o)h+='<p style="margin:10px 0 0;font-size:12.5px;color:var(--muted)">No owner is named yet. Name one on the Overview tab first.</p>';
+ h+='</div></div>';
+ if(c.dec==="Do not renew"){
+  h+='<div class="card" id="letter"><div class="hd"><h3>Draft notice letter</h3><span class="chip">Draft, not sent</span></div><div class="bd"><div class="letter">To: '+esc(r.s)+(k?' Pvt Ltd':'')+'<br>Subject: Notice of non-renewal, '+esc(r.a)+(k?' dated 1 April 2024':'')+'<br><br>We give notice under clause 14.2 of the '+esc(r.a)+(k?', as amended by Amendment 1 dated 1 October 2025,':'')+' that the agreement will not renew when the current term ends on '+termEnd(id)+'.<br><br><span class="nt">Drafted for Meera Joshi (Legal) to check and send. The system does not send it.</span></div><div style="display:flex;gap:8px;margin-top:12px">'+sb("Send to Legal to check","Notice draft sent to Meera Joshi to check")+nb("Edit draft","","Editing drafts is not built. A person would edit before sending.")+'</div></div></div>';
+ } else if(c.dec){
+  h+='<div class="card" id="letter"><div class="bd" style="font-size:13px;color:var(--muted)">Only a non-renewal notice is drafted in this prototype. Choose "Do not renew" to see it.</div></div>';
+ }
+ h+='</div><div style="display:grid;gap:16px"><div class="card" id="log"><div class="hd"><h3>Activity log</h3></div><div class="bd" style="padding:6px 16px 10px"><ul class="log">';
+ c.log.slice().reverse().forEach(function(l){h+='<li><s>'+esc(l[0])+'</s><span>'+esc(l[1])+'</span></li>'});
+ var ow=o||{n:"The owner"},mgr=k?"Priya Nair, his manager":"Their manager";
+ h+='</ul></div></div><div class="card" id="leaver"><div class="hd"><h3>If the owner leaves the company</h3></div><div class="bd"><div class="leaver"><div class="p x"><b>'+esc(k?"Rohan Shah":ow.n)+'</b><s>left, per staff directory</s></div><span style="color:var(--muted)">→</span><div class="p"><b>'+mgr+'</b><s>receives all their alerts</s></div></div><p style="margin:12px 0 0;font-size:12.5px;color:var(--muted)">Alerts do not disappear with the leaver. They move, with a note, and feed the same escalation.</p></div></div></div></div>';
+ return h;
+}
+
+function contract(){
+ var h=crumbHead();
+ h+=S.tab==="terms"?tabTerms():S.tab==="reading"?tabReading():S.tab==="decision"?tabDecision():tabOverview();
+ return h;
+}
+
+/* ---- Ask ---- */
+var Q=["When must we tell Kaveri we will not renew?","Does Kaveri owe us credit for late deliveries in 2024?","Which contracts have no owner?"];
+function matchQ(q){
+ q=q.toLowerCase();
+ var hit=ROWS.filter(function(r){return q.indexOf(r.s.toLowerCase().split(" ")[0])>=0})[0],id=hit?hit.id:"kaveri";
+ if(/no owner|unowned|without (an )?owner|nobody owns/.test(q))return {a:2,id:id};
+ if(/notice|renew|deadline|stop|cancel/.test(q))return {a:0,id:id};
+ if(/credit|late|2024|deliver|sla|penalt|service level|uptime|temperature|on.time/.test(q)){
+  if(/2024/.test(q)&&id==="kaveri")return {a:1,id:id};
+  if(obOf(id))return {a:4,id:id};
+  return {a:3,id:id};
+ }
+ return {a:3,id:id};
+}
+function ask(){
+ var id=S.askId,r=rowOf(id),u=8-verN(id),h=head("spark","Ask","Ask a question across Tea Post's supplier contracts. Every answer shows the words it came from.");
+ h+='<div class="card" id="askbox"><div class="bd"><div class="lbl" style="margin-bottom:8px">Try one</div><div class="qs">';
+ Q.forEach(function(q,i){h+='<button class="btn'+(S.qtxt===q?' on':'')+'" data-askq="'+i+'">'+esc(q)+'</button>'});
+ h+='</div><div class="askbox"><input class="in" id="q" placeholder="Or type one, for example: when must we give notice to Mehsana?" value="'+esc(S.qtxt)+'" aria-label="Question"><button class="btn pri" data-a="askgo">Ask</button></div></div></div><div style="height:14px"></div>';
+ if(S.ask===0){
+  var f=FF(id),o=ownerOf(id),st=ownState(id),dstr=fmt(r.d),sp=SPEC[id];
+  if(dleft(r.d)<0)h+='<div class="card ans nf" id="answer"><div class="bd"><h2>That date has passed</h2><p style="margin:0;font-size:13.5px">Notice to '+esc(r.s)+' was due by '+dstr+', '+(-dleft(r.d))+' days ago. '+(cs(id).rec&&cs(id).dec==="Do not renew"?'A decision not to renew is recorded. Confirm with Legal that the notice reached them in time.':'No notice is recorded, so the agreement has most likely renewed for another year.')+'</p><p class="foot"><a href="#" data-open="'+id+'">Open the contract</a></p></div></div>';
+  else h+='<div class="card ans" id="answer"><div class="bd"><h2>By '+dstr+', in writing</h2><p style="margin:0;font-size:13.5px">That is '+sp.notice+' days before the term ends on '+termEnd(id)+'. '+(o?'The owner is '+o.n+' ('+(st==="ok"?'accepted':'not yet accepted')+').':'No owner is named yet.')+'</p>';
+  if(id==="kaveri")h+='<div class="cite"><div class="quote"><span class="src">[1] Amendment 1, clause 2</span>… replacing <mark>ninety (90) days</mark> with <mark>one hundred and eighty (180) days</mark>.</div><div class="quote"><span class="src">[2] Master, clause 14.2 (replaced by [1])</span>… notice of not less than <mark>ninety (90) days</mark> before the end of the then current term.</div></div>';
+  else h+='<div class="cite"><div class="quote"><span class="src">[1] '+esc(f[0].doc)+'</span>'+f[0].src+'</div><div class="quote"><span class="src">[2] '+esc(f[1].doc)+'</span>'+f[1].src+'</div></div>';
+  h+='<p class="foot">Based on '+(sp.signed||sp.docs.length)+' signed document'+((sp.signed||sp.docs.length)>1?'s':'')+'. '+(u===0?'All 8 fields on this contract are verified.':u+' of 8 fields on this contract are not yet verified'+(fOK(0,id)?'.':', including the notice period itself.')+' <a href="#" data-open="'+id+'" data-tab-after="reading">See which</a>')+'</p></div></div>';
+ } else if(S.ask===1){
+  h+='<div class="card ans nf" id="answer"><div class="bd"><h2>Not found. That does not mean none is owed.</h2><p style="margin:0;font-size:13.5px">The record cannot say whether Kaveri owed credits in 2024.</p><ul><li>Delivery data in the record starts in <b>July 2025</b>.</li><li><b>SOW 1 (2023)</b>, which would have set the 2024 service level, is not in the record.</li></ul>';
+  h+='<div style="display:flex;gap:8px;flex-wrap:wrap">'+sb("Ask Procurement for the 2024 delivery reports","Procurement asked for Kaveri's 2024 delivery reports","sm")+sb("Ask Legal to load SOW 1","Legal asked to load SOW 1 (2023)","sm")+'</div>';
+  h+='<p class="foot">For July 2025 onward the record does hold the data: '+below()+' of 12 months below the level. <a href="#" data-go="obl:kaveri">See the months</a></p></div></div>';
+ } else if(S.ask===2){
+  var R=rows().filter(function(x){return x.o==="none"});
+  h+='<div class="card ans" id="answer"><div class="bd"><h2>'+(R.length?R.length+' of '+ROWS.length+' contracts '+(R.length===1?'has':'have')+' no owner':'Every drawn contract has an owner')+'</h2>';
+  R.forEach(function(x){h+='<div class="kv" style="padding:7px 0;border-bottom:1px solid var(--line2)"><div><b>'+esc(x.s)+'</b><div class="sub" style="font-size:11.5px;color:var(--muted)">Notice deadline '+fmt(x.d)+' · last owner left in '+x.lo+'</div></div><button class="btn sm" data-open="'+x.id+'">Assign</button></div>'});
+  h+='<p class="foot">This comes from the record\'s owner field, not from a clause. Alerts for these go nowhere until a person is named.</p></div></div>';
+ } else if(S.ask===4){
+  var o2=obOf(id),m=missed(o2);
+  h+='<div class="card ans" id="answer"><div class="bd"><h2>'+(m?esc(r.s)+' missed its level in '+m+' of 12 months':esc(r.s)+' met its level in all 12 months')+'</h2><p style="margin:0;font-size:13.5px">'+esc(o2.t)+'. '+(m&&o2.pct?'Credit due: '+mny(creditAll(o2))+', none claimed.':'No credit is due.')+'</p><div class="cite"><div class="quote"><span class="src">'+esc(o2.clause)+'</span>'+esc(o2.t)+'.</div><div class="quote"><span class="src">Delivery record, Jul 2025 to Jun 2026</span>Average '+nf(avgOf(o2))+o2.unit+'. '+m+' of 12 months outside the level.</div></div><p class="foot"><a href="#" data-go="obl:'+id+'">See the months</a></p></div></div>';
+ } else {
+  h+='<div class="card ans nf" id="answer"><div class="bd"><h2>This prototype answers a few kinds of question</h2><p style="margin:0;font-size:13.5px">Notice deadlines for any supplier, which contracts have no owner, and service levels. Pick one above, or try "when must we give notice to Mehsana?".</p></div></div>';
+ }
+ return h;
+}
+
+/* ---- Obligations ---- */
+function obl(){
+ var h;
+ if(!S.obl){
+  h=head("obl","Obligations","Commitments read from signed contracts, tracked against delivery data.",nb("Export","","Export is not built in this prototype"));
+  h+='<div class="card" id="otbl"><div class="hd"><h3>Service levels</h3></div><table><thead><tr><th>Supplier</th><th>Commitment</th><th>Last 12 months</th><th>Credits due</th></tr></thead><tbody>';
+  OBLS.forEach(function(o){
+   var r=rowOf(o.id),m=missed(o),cl=m===0?"ok":m<3?"wait":"none",cd=o.pct&&m?'<b>'+mny(creditAll(o))+'</b> <span style="color:var(--muted)">unclaimed</span>':'<span style="color:var(--muted)">None</span>';
+   h+='<tr class="clk'+(o.id==="kaveri"?' hot':'')+'" data-go="obl:'+o.id+'"><td><a class="rowlink" href="#" data-go="obl:'+o.id+'">'+esc(r.s)+'</a></td><td style="color:var(--muted);font-size:12.5px">'+esc(o.t)+'</td><td><span class="chip '+cl+'"><i class="dot"></i>'+(m?'Missed in '+m+' of 12 months':'Met in 12 of 12 months')+'</span></td><td class="num">'+cd+'</td></tr>';
+  });
+  return h+'</tbody></table><div class="tfoot">'+OBLS.length+' of the '+ROWS.length+' drawn contracts carry a measurable service level.</div></div>';
+ }
+ var o=obOf(S.oid||"kaveri"),r=rowOf(o.id),m=missed(o),k=o.id==="kaveri",span=o.hi-o.lo,H=130;
+ h='<button class="back" data-go="obl">← Obligations</button>';
+ h+=head("gauge",esc(r.s)+": "+o.title.toLowerCase(),esc(o.clause)+' · '+esc(o.t.charAt(0).toLowerCase()+o.t.slice(1))+(o.pct?' · '+o.pct+'% of that month\'s invoice as credit':''),nb("Export","","Export is not built in this prototype"));
+ h+='<div class="kpis"><div class="stat'+(m?' warn':'')+'"><div class="n">'+m+' <s>of 12</s></div><div class="t">Months outside the level</div></div><div class="stat"><div class="n">'+nf(avgOf(o))+o.unit+'</div><div class="t">12-month average against '+nf(o.level)+o.unit+'</div></div><div class="stat"><div class="n">'+(o.pct&&m?mny(creditAll(o)):'None')+'</div><div class="t">'+(o.pct&&m?'Credits due, none claimed':'Credits due')+'</div></div></div>';
+ h+='<div class="cols"><div style="display:grid;gap:16px"><div class="card" id="perf"><div class="hd"><h3>'+esc(o.title)+', Jul 2025 to Jun 2026</h3></div><div class="bd"><div class="perf"><div class="lv" style="bottom:'+((o.level-o.lo)/span*H)+'px"><span>'+nf(o.level)+o.unit+'</span></div>';
+ o.vals.forEach(function(v){h+='<i class="'+(miss(o,v)?"m":"")+'" style="height:'+Math.max(3,(v-o.lo)/span*H)+'px"></i>'});
+ h+='</div><div class="pm">'+o.vals.map(function(v,i){return '<span><b>'+nf(v)+'</b>'+PM[i]+'</span>'}).join("")+'</div><div class="legend"><span><b style="background:var(--sea)"></b>Within the level</span><span><b style="background:var(--coral)"></b>Outside the level</span></div></div></div>';
+ if(o.pct&&m){
+  h+='<div class="card" id="claim"><div class="hd"><h3>Draft credit claim</h3><span class="chip">Draft, not sent</span></div><div class="bd"><div class="letter">To: '+esc(r.s)+(k?' Pvt Ltd':'')+'<br>Subject: Service credits under '+esc(o.clause)+'<br><br>'+esc(o.title)+' was outside the level in '+m+' months between July 2025 and June 2026. A credit of '+o.pct+'% of the monthly invoice applies to each. We claim '+mny(creditAll(o))+' in total.<br><br><span class="nt">Drafted for Anita Pillai (Procurement) to check and send. Finance adjusts the next payment only after '+esc(r.s.split(" ")[0])+' agrees.</span></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-send="Credit claim of '+mny(creditAll(o))+' sent to Procurement to check" data-cid="'+o.id+'">Send to Procurement to check</button>'+nb("Edit draft","","Editing drafts is not built. A person would edit before sending.")+'</div></div></div>';
+ } else h+='<div class="card" id="claim"><div class="bd" style="font-size:13px;color:var(--muted)">'+(m?'This contract has no credit rule, so there is nothing to claim.':'Nothing to claim. Every month was within the level.')+'</div></div>';
+ h+='</div><div class="card" id="credits"><div class="hd"><h3>How the credit is worked out</h3></div><div class="bd" style="padding-top:8px">';
+ if(o.pct){
+  h+='<div class="kv"><s>Monthly invoice</s><b>'+lakh(o.inv)+'</b></div><div class="kv"><s>Credit per missed month</s><b>'+o.pct+'% = '+rs(creditOne(o))+'</b></div><div style="border-top:1px solid var(--line2);margin:8px 0 4px"></div>';
+  o.vals.forEach(function(v,i){if(miss(o,v))h+='<div class="kv" style="padding:3px 0"><s>'+PM[i]+' '+(i<6?"2025":"2026")+' · '+nf(v)+o.unit+'</s><b class="num">'+rs(creditOne(o))+'</b></div>'});
+  h+='<div style="border-top:1px solid var(--line);margin:8px 0 4px"></div><div class="kv"><s><b style="color:var(--ink)">'+m+' month'+(m===1?'':'s')+'</b></s><b class="num" style="font-size:15px">'+mny(creditAll(o))+'</b></div>';
+ } else h+='<p style="margin:0;font-size:13px;color:var(--muted)">This contract sets a level but no credit. A miss would be raised with the supplier, not charged.</p>';
+ return h+'</div></div></div>';
+}
+
+var SCREEN={
+ radar:{r:radar,crumb:"Manage <b>Renewal radar</b>",nav:"radar"},
+ repo:{r:repo,crumb:"Manage <b>Repository</b>",nav:"repo"},
+ contract:{r:contract,crumb:function(){return "Renewal radar · <b>"+esc(rowOf(S.cid).s)+"</b>"},nav:"radar"},
+ ask:{r:ask,crumb:"<b>Ask</b>",nav:""},
+ obl:{r:obl,crumb:"Manage <b>Obligations</b>",nav:"obl"}
+};
+
+/* ================= about / explainer page ================= */
+var ABOUT_SECS=[["why","Why this stage"],["client","Client and roles"],["who","Stakeholders"],["problem","The problem"],["scope","Scope"],["how","How I decided"],["metrics","Success metrics"],["notes","Honest notes"]];
+function abSec(id,n,title,body){return '<section class="abs" id="ab-'+id+'"><div class="abn">'+n+'</div><h2>'+title+'</h2>'+body+'</section>'}
+function abTbl(head,rows,cls){
+ return '<table class="abt '+(cls||'')+'"><thead><tr>'+head.map(function(x){return '<th>'+x+'</th>'}).join("")+'</tr></thead><tbody>'+rows.map(function(r){
+  return '<tr'+(r.group?' class="grp"':'')+'>'+(r.group?'<td colspan="'+head.length+'">'+r.group+'</td>':r.map(function(c,i){return '<td'+(i===0?' class="f"':'')+'>'+c+'</td>'}).join(""))+'</tr>'}).join("")+'</tbody></table>';
+}
+function aboutPage(){
+ var s=stats(),kc=mny(creditAll(obOf("kaveri")));
+ var h='<div class="about" id="about"><div class="abh"><div class="abhi"><div><div class="lbl">About this prototype</div><b class="abtt">Contract Radar for Tea Post: a contract record that pushes</b></div><div class="spacer"></div><nav class="abnav">'+ABOUT_SECS.map(function(x){return '<button data-sec="'+x[0]+'">'+x[1]+'</button>'}).join("")+'</nav><button class="btn sm pri" data-a="closeabout">Back to prototype</button></div></div><div class="abw">';
+ h+='<div class="abtop"><p>A working concept for Sirion’s brief: pick one contract stage and build an AI-powered prototype for a 3,000-employee company with about 2,500 suppliers. <b>I picked what happens after signing</b>, where contract terms stop being looked at and money leaks.</p><div class="abgo"><span>Two-minute path</span><button class="btn sm" data-tour="a">1. The renewal that almost slipped</button><button class="btn sm" data-tour="d">2. Ask the record</button><button class="btn sm" data-tour="e">3. The missed credits</button></div></div>';
+
+ h+=abSec("why","1","Why this stage",
+  '<ul class="abl"><li><b>Stage:</b> signed contracts to renewal. Two jobs in one: a <b>searchable record</b> of every signed contract, and an <b>owner and renewal radar</b> that tells a named person in time.</li>'+
+  '<li><b>Why here:</b> three of the brief’s five symptoms (unreviewed auto-renewals, missed service levels, mismatched invoices) arise after signing. It is also the only route that reaches contracts <i>already signed</i>, not just new ones.</li>'+
+  '<li><b>Why both:</b> a record that only stores changes nothing. The radar needs the record to read from. Together they close the gap between what was agreed and who acts on it.</li></ul>');
+
+ h+=abSec("client","2","Tea Post, and who does what",
+  '<p class="ablead">Tea Post is a tea and snacks chain in Gujarat: <b>3,000 employees</b>, <b>about 2,500 suppliers</b>, <b>2,480 contracts</b> on record. <b>12</b> are fully drawn in this prototype, the ones with a renewal decision in the next 15 months.</p>'+
+  abTbl(["Tea Post (the client)","Sirion (the product)"],[
+   ["Owns the contracts, suppliers and money at stake","Reads signed documents and amendments; builds one searchable record, with the source words beside every fact"],
+   ["Names a business owner for each contract","Names or asks for an owner, alerts them, and escalates if nobody answers (14, 30, 60 days)"],
+   ["Decides: renew, renegotiate or stop, and says why","Works out dates and credits in code, and keeps the decision and reason with the contract"],
+   ["Legal checks what the AI read and sends any notice","Drafts notices and claims; never sends them"]
+  ])+'<p class="abfn">The Sirion column is my reading of its public positioning, built as a concept. It is not Sirion’s actual product behaviour.</p>');
+
+ h+=abSec("who","3","Who this is for",
+  abTbl(["Stakeholder","Pain","Job to be done"],[
+   {group:"Primary: the people who use it"},
+   ["<b>Rohan Shah</b><br><s>Business owner, Supply Chain</s>","Never opened the contract. Finds out about a renewal, or a price change, after the fact","Know what is due and what was promised, in a minute, so he can decide"],
+   ["<b>Anita Pillai</b><br><s>Procurement</s>","Notice dates sit in files and memory. Contracts have no owner once signed","See renewals in time and who owns each, so she can renegotiate"],
+   ["<b>Meera Joshi</b><br><s>Legal, contract administrator</s>","Terms are spread across a master, SOWs and amendments. Cannot trust a tool she cannot check","See what the AI read next to the source, and accept or correct it"],
+   {group:"Secondary: affected, or the safety net"},
+   ["<b>Dev Kapadia</b><br><s>Finance</s>","Service credits and price rises never reach him","See missed levels and the credit owed, as arithmetic he can check"],
+   ["<b>Priya Nair</b><br><s>Manager of an owner</s>","An owner leaves and their alerts vanish","Receive the alerts, with a note, and keep the clock running"],
+   ["<b>Head of Procurement (CPO)</b>","No portfolio view of contracts nobody owns","See the unowned list when escalation reaches day 60"],
+   ["<b>Suppliers</b>","Chase for payment; renewals handled late","Not served directly. They benefit from better-run renewals"]
+  ]));
+
+ h+=abSec("problem","4","The problem, in three numbers",
+  '<div class="abstat"><div><b>'+cr(s.due12)+'</b><span>of annual value has a notice deadline in the next 12 months</span></div><div><b>'+(s.n-s.acc)+' of '+s.n+'</b><span>drawn contracts have no accepted owner (2 have none at all)</span></div><div><b>'+kc+'</b><span>of service credit owed by one supplier, never claimed</span></div></div>'+
+  '<p class="ablead" style="margin-top:12px">The cause is one chain. Facts are agreed at signing, filed as PDFs, and nobody owns them afterwards. Renewal dates, price changes and service levels are needed months later, when nobody is looking. These figures come from the prototype’s own data, so they match the screens.</p>');
+
+ h+=abSec("scope","5","Scope: what the prototype does",
+  abTbl(["Pain","What the prototype does","See it in"],[
+   ["Renewal notice missed","Radar ordered by notice deadline; alert to the owner; escalation at 14, 30 and 60 days; a clear state when the date has passed. Use the <b>Demo date</b> control in the top bar","Walkthrough A"],
+   ["No owner after signing","Name an owner, accept, reassign. When an owner leaves, alerts move to their manager with a note","Walkthroughs A, C"],
+   ["Terms spread across documents","One context pack per contract: what we pay, what changed since signing, an emailed discount flagged as unpapered","Walkthrough A"],
+   ["Cannot trust what AI read","Each field shown beside its source words. A person accepts or edits. Unchecked fields are listed, not hidden","Walkthrough B"],
+   ["Cannot find a term","Ask in plain words. Every answer cites its source. “Not found” is an answer, with what is missing","Walkthrough D"],
+   ["Service credits never claimed","Delivery against the promised level, credit worked out in code, claim drafted for a person to send","Walkthrough E"]
+  ])+
+  '<div class="about2"><div><div class="lbl">Built to work</div><p>All 12 contracts open with every tab. Accepting, assigning, editing a value, recording a decision (reason required), reopening it, the drafted notice, Ask, and Obligations all change the data, and every screen follows.</p></div><div><div class="lbl">Deliberately not built</div><p>Intake, negotiation and approvals. Invoice matching. Supplier side. Real email and calendar. Export, Upload, New contract and the Home, Reports and Settings screens.</p></div></div>');
+
+ h+=abSec("how","6","How I decided",
+  '<ul class="abl"><li><b>Chose by evidence, then scored.</b> Five candidate stages. Searchable record scored highest to build (18 of 20). The radar reaches the most severe pain, and closes the gap between a signed term and a person who acts. So: record plus radar, not one alone.</li>'+
+  '<li><b>AI reads. Code computes. A person decides.</b> Dates and credits are arithmetic, done in code. What the AI reads shows its source and waits for a person’s check.</li>'+
+  '<li><b>It informs and nudges. It never sends.</b> Notices and claims are drafts for Legal and Procurement. The accountable person stays accountable.</li>'+
+  '<li><b>Depth over breadth.</b> Twelve contracts working end to end, rather than 2,480 shallowly.</li>'+
+  '<li><b>Guided, then free.</b> Reviewers get short walkthroughs by role, and can explore everything on their own.</li></ul>');
+
+ h+=abSec("metrics","7","Success metrics",
+  abTbl(["Metric","Today in the demo","Target"],[
+   ["Contracts with an accepted owner",s.acc+" of "+s.n+" drawn","All, within 30 days of rollout"],
+   ["Renewals decided before the notice date","Measure first at rollout (not known)","100%; no unwanted auto-renewal"],
+   ["Service credits claimed, of credits due","₹0 of "+kc+" (one supplier)","All claimed within the claim window"],
+   ["<i>Guardrail:</i> AI-read fields a person had to correct","Tracked per field in the Reading tab","Falls over time; any rise pauses auto-trust"]
+  ])+'<p class="abfn">Targets are proposals. Tea Post’s real baselines would be measured in a first pilot on the contracts due within 180 days.</p>');
+
+ h+=abSec("notes","8","Honest notes",
+  '<ul class="abl"><li>Tea Post, its people, suppliers, contracts and numbers are <b>invented</b>.</li>'+
+  '<li>The look follows Sirion’s public product screens. It is not official and I am not affiliated with Sirion.</li>'+
+  '<li>Contract readings are prepared in advance from sample contracts. There is no live model call in this demo.</li>'+
+  '<li>Evidence behind the choices (pain register, scoring, sample-contract clause checks) is in my discovery write-up. Some pre-signature pains rest on judgement, not data.</li></ul>');
+ return h+'<div class="abend">Contract Radar for Tea Post. A concept prototype.</div></div></div>';
+}
+
+/* ================= design notes ================= */
+function pinKey(){return S.screen==="contract"?"contract:"+S.tab:S.screen==="obl"?(S.obl?"obl2":"obl"):S.screen}
+var PINS={
+ "radar":[
+  {at:"#stat-cov",k:"new",t:"Coverage, not count. A renewal with no accepted owner is a renewal nobody is going to handle, so it is measured like a defect."},
+  {at:"#chart",k:"have",t:"Sirion already does renewal calendars and dashboards. This view is drawn in that style on purpose."}],
+ "repo":[
+  {at:"#rtabs",k:"have",t:"Sirion's repository already lists and filters contracts. The queue is a filtered view of it."},
+  {at:"#queue",k:"new",t:"Ordered by deadline and value, not by upload date. Legal's time goes where a missed date costs most."}],
+ "contract:overview":[
+  {at:"#pack",k:"new",t:"The context pack. Today a renewal alert links to a contract. A person who has never opened a contract still cannot decide."},
+  {at:"#unverified",k:"new",t:"Low-confidence fields are shown, not hidden. The product says what it is unsure of before anyone asks."},
+  {at:"#ownercard",k:"new",t:"An alert addressed to a role goes nowhere. This one waits for a named person to accept, and escalates if they do not."}],
+ "contract:terms":[
+  {at:"#termtbl",k:"new",t:"One answer to what applies today, with the document each term comes from and what it replaced."},
+  {at:"#unpapered",k:"new",t:"An email is not a signed document. The record shows the discount, labels it unpapered, and does not treat it as a term."}],
+ "contract:reading":[
+  {at:"#flist",k:"new",t:"Status is shown per field. Nothing is hidden because the AI was unsure."},
+  {at:"#srcpane",k:"new",t:"Every field sits next to the words it came from, so checking takes seconds, not a re-read. A person accepts. The AI does not."}],
+ "contract:decision":[
+  {at:"#letter",k:"new",t:"A draft is the furthest the product goes. A person checks it and sends it."},
+  {at:"#log",k:"new",t:"The reason is kept with the contract, so next year's owner knows why."},
+  {at:"#leaver",k:"new",t:"When an owner leaves, alerts move to their manager. They do not disappear with the leaver."}],
+ "ask":[
+  {at:"#askbox",k:"have",t:"Sirion already answers questions across contracts. Source text on every answer, and a plain 'not found', are what we add."},
+  {at:"#answer",k:"new",t:"The answer says what it rests on, and which fields are still unchecked."}],
+ "obl":[{at:"#otbl",k:"have",t:"Sirion tracks obligations and service levels, including credits. This is mostly overlap."}],
+ "obl2":[
+  {at:"#perf",k:"have",t:"Tracking delivery against a promised level is standard Sirion territory."},
+  {at:"#claim",k:"new",t:"Only the drafted claim is new. A person at Tea Post sends it. The product never does."}]
+};
+
+/* ================= tours ================= */
+var TOURS={
+ a:{n:"The renewal that almost slipped",d:"One contract, from the radar to the decision",fin:"A deadline nobody was tracking became a decision a named person made, with a reason on the record.",steps:[
+  {s:"radar",at:"#statstrip",p:"bottom",w:"Anita, Procurement",h:"Not how many contracts. How many are covered.",
+   b:function(){var s=stats();return s.acc+" of "+s.n+" renewals have an owner who accepted. "+s.wait+" do not, and "+s.none+" of those have no owner at all."}},
+  {s:"radar",at:"#tbl",p:"right",w:"Anita, Procurement",h:"Sorted by the day you must act",b:"Not by signature date or expiry. The notice deadline is the date that can be missed."},
+  {s:"radar",at:"#row-kaveri",p:"bottom",w:"Anita, Procurement",h:function(){return "Kaveri Packaging, "+dleft(DL)+" days out"},b:"An amendment doubled the notice period, from 90 to 180 days. Read only the original and the team would act 90 days late."},
+  {s:"contract",t:"overview",at:"#alertbar",p:"bottom",w:"Rohan, business owner",h:"Rohan gets this, not a legal queue",b:"He owns the service, so he owns the decision. The alert names him and waits."},
+  {s:"contract",t:"overview",at:"#pack",p:"left",w:"Rohan, business owner",h:"Enough to decide without opening a contract",b:function(){return "Cost, what changed since signing, and delivery: "+below()+" of 12 months below the promised level. Rohan has never opened this agreement."}},
+  {s:"contract",t:"overview",at:"#ownercard",p:"left",w:"Rohan, business owner",h:"Nothing moves until a person accepts",b:"Silence is not agreement. On day 14 the reminder copies his manager and Procurement."}
+ ]},
+ b:{n:"A day as the Legal administrator",d:"Meera checks what the AI read",fin:"The AI reads. Meera decides what counts. Every other screen now reflects her check.",steps:[
+  {s:"repo",at:"#queue",p:"bottom",w:"Meera, Legal",h:"Meera starts here, not in a folder tree",b:function(){return stats().unv+" records still have fields to check. They are ordered by deadline, then value, not by upload date."}},
+  {s:"repo",at:"#q-kaveri",p:"bottom",w:"Meera, Legal",h:"Kaveri first",b:function(){return dleft(DL)+" days to its notice deadline. She opens it."}},
+  {s:"contract",t:"reading",at:"#flist",p:"right",w:"Meera, Legal",h:"Every field shows its status",b:function(){var c=0,l=0;FF("kaveri").forEach(function(f,i){if(!fOK(i,"kaveri")){f.st==="chk"?c++:l++}});return verN("kaveri")+" of 8 are verified. "+(c+l?c+" need a check and "+l+" are low confidence. Nothing is hidden because the AI was unsure.":"All eight have been checked.")}},
+  {s:"contract",t:"reading",at:"#srcpane",p:"left",w:"Meera, Legal",h:"The words it came from",b:"Amendment 1 replaced 90 days with 180. The documents disagree, so a person confirms. Meera does.",
+   act:{label:"Accept as read",fn:function(){var c=cs("kaveri");c.fv[0]=true;c.log.push([td(),"Meera Joshi accepted notice to stop renewal as read"]);S.sel=1}}},
+  {s:"contract",t:"reading",at:"#flist",p:"right",w:"Meera, Legal",h:"One check, updated everywhere",b:function(){return verN("kaveri")+" of 8 verified. The radar, the repository queue and Ask now show the same count."}},
+  {s:"contract",t:"terms",at:"#unpapered",p:"top",w:"Meera, Legal",h:"An email is not a contract term",b:"Kaveri offered 3% off by email. It is shown, labelled unpapered, and not counted until Legal papers it."}
+ ]},
+ c:{n:"The owner leaves the company",d:"An alert that outlives its owner",fin:"An owner leaving moved the alert. It did not lose it.",steps:[
+  {s:"contract",t:"decision",at:"#leaver",p:"left",w:"The system",h:"Owners leave. Alerts should not.",b:"The staff directory says Rohan has left Tea Post. His alerts move to his manager, with a note."},
+  {s:"contract",t:"overview",at:"#ownercard",p:"left",w:"Priya, manager",pre:applyLeft,h:"Kaveri has a new owner",b:"Priya Nair now holds the alert. She has to accept it like anyone else, and the escalation clock keeps running."},
+  {s:"radar",at:"#statstrip",p:"bottom",w:"Anita, Procurement",h:"The radar did not go blank",b:function(){var s=stats();return "Kaveri still counts as waiting, so "+s.wait+" renewals show as waiting. Nothing fell out of the count."}},
+  {s:"contract",t:"decision",at:"#log",p:"left",w:"Meera, Legal",h:"The move is on the record",b:"The log shows who it moved from, to whom, and when."}
+ ]},
+ d:{n:"Procurement asks a question",d:"Ask the record, with sources",quick:1,fin:"Every answer showed its source. A gap was reported as a gap.",steps:[
+  {s:"ask",at:"#askbox",p:"bottom",w:"Anita, Procurement",h:"Ask in plain words",b:"Across every contract in the record. Two answers are written by hand here so you can judge their shape.",pre:function(){S.ask=0;S.askId="kaveri";S.qtxt=Q[0]}},
+  {s:"ask",at:"#answer",p:"top",w:"Anita, Procurement",h:"The answer, then the words behind it",b:"The new clause and the one it replaced, side by side. It also says how many fields are still unchecked."},
+  {s:"ask",at:"#answer",p:"top",w:"Anita, Procurement",pre:function(){S.ask=1;S.askId="kaveri";S.qtxt=Q[1]},h:"Not found is an answer too",b:"It says what is missing, SOW 1 and the 2024 delivery data, instead of guessing."}
+ ]},
+ e:{n:"Finance and the missed credits",d:"From a missed level to a drafted claim",quick:1,fin:"Credits went from invisible to a drafted claim a person can send.",steps:[
+  {s:"obl",obl:false,at:"#otbl",p:"bottom",w:"Dev, Finance",h:"Misses without opening a contract",b:function(){return "Kaveri missed its delivery level in "+below()+" of 12 months, and no credit was claimed."}},
+  {s:"obl",obl:true,at:"#credits",p:"left",w:"Dev, Finance",h:"The credit is just arithmetic",b:function(){return CREDIT_PCT+"% of "+lakh(INV)+" a month, over "+below()+" months, is "+lakh(creditTot())+". Code computes it. The AI does not."}},
+  {s:"obl",obl:true,at:"#claim",p:"top",w:"Dev, Finance",h:"A draft for a person to send",b:"Procurement checks it. Finance adjusts the next payment only after Kaveri agrees."}
+ ]}
+};
+function val(x){return typeof x==="function"?x():x}
+
+/* ================= shell ================= */
+function shell(){
+ var sc=SCREEN[S.screen];
+ var nav=[["home","Home","home"],["repo","Repository","repo"],["radar","Renewal radar","radar"],["obl","Obligations","obl"],["rep","Reports","rep"]];
+ var h='<div class="app"><div class="brand"><div class="mark"><i></i></div><div class="wordmark">Contract Radar</div></div>';
+ h+='<div class="topbar"><div class="crumb">'+(typeof sc.crumb==="function"?sc.crumb():sc.crumb)+'</div><div class="spacer"></div>';
+ h+='<div class="clock" id="clock"><span>Demo date</span>'+STOPLBL.map(function(x,i){return '<button data-ck="'+i+'" class="'+(S.ck===i?'on':'')+'">'+x+'</button>'}).join("")+'</div>';
+ h+='<button class="search" data-go="ask" style="cursor:pointer;text-align:left;width:210px">'+svg("find")+'Ask across 2,480 contracts</button>';
+ h+='<button class="btn sm" data-a="tours">Walkthroughs</button><button class="btn sm ghost" data-a="reset">Reset</button>';
+ h+='<button class="btn sm" id="notesbtn" style="'+(S.notes?'background:#E8ECFA;border-color:#C6D1F0;color:#3C56A8':'')+'">Design notes '+(S.notes?"on":"off")+'</button>';
+ h+='<button class="askpill" data-go="ask"><div class="mark"><i></i></div>Ask</button><div class="avatar">AP</div></div><nav class="nav">';
+ nav.forEach(function(n){
+  var go=({repo:"repo",radar:"radar",obl:"obl"})[n[2]];
+  h+='<a href="#" '+(go?'data-go="'+go+'"':'data-toast="1"')+' class="'+(sc.nav===n[2]?'on':'')+'">'+svg(n[0])+n[1]+'</a>';
+ });
+ h+='<div class="grp">Administration</div><a href="#" data-toast="1">'+svg("adm")+'Settings</a></nav><main class="main" id="main"><div class="wrap">'+sc.r()+'</div></main></div>';
+ return h;
+}
+function draw(){
+ $("#root").innerHTML=shell();
+ if(S.notes&&!S.tour)placePins();
+ layer();
+}
+function redraw(){var m=$("#main"),y=m?m.scrollTop:0;draw();var m2=$("#main");if(m2)m2.scrollTop=y}
+function go(k){
+ S.pin=null;S.modal=null;
+ if(k==="obl2")k="obl:kaveri";
+ if(k.indexOf("obl:")===0){S.screen="obl";S.obl=true;S.oid=k.slice(4)}
+ else if(k==="obl"){S.screen="obl";S.obl=false}
+ else{S.screen=k}
+ draw();var m=$("#main");if(m)m.scrollTop=0;
+}
+function openContract(id,tab){S.cid=id;S.screen="contract";S.tab=tab||"overview";S.pick=false;S.edit=false;S.sel=0;S.pin=null;S.modal=null;draw();var m=$("#main");if(m)m.scrollTop=0}
+function placePins(){
+ (PINS[pinKey()]||[]).forEach(function(p,i){
+  var el=$(p.at);if(!el)return;
+  if(getComputedStyle(el).position==="static")el.style.position="relative";
+  var b=document.createElement("button");
+  b.className="pin";b.textContent=i+1;b.style.right="-9px";b.style.top="-9px";b.setAttribute("aria-label","Design note "+(i+1));
+  b.onclick=function(e){e.stopPropagation();S.pin={x:e.clientX,y:e.clientY,d:p};layer()};
+  el.appendChild(b);
+ });
+}
+function toast(m){S.toast=m||"Not part of this walkthrough";layer();clearTimeout(toast.t);toast.t=setTimeout(function(){S.toast=null;layer()},2200)}
+
+/* ================= tour engine ================= */
+function startTour(id){S.about=false;reset();S.welcome=false;S.tour=id;S.step=0;S.done=false;S.last=id;S.dirty=true;goStep()}
+function goStep(){
+ var st=TOURS[S.tour].steps[S.step];
+ if(st.pre){st.pre();S.dirty=true}
+ var tab=st.t||S.tab,ob=st.s==="obl"?!!st.obl:false;
+ var diff=st.s!==S.screen||(st.s==="contract"&&tab!==S.tab)||(st.s==="obl"&&ob!==S.obl)||S.dirty;
+ S.dirty=false;
+ if(diff){S.screen=st.s;S.tab=tab;S.obl=ob;S.cid="kaveri";S.oid="kaveri";S.pick=false;S.edit=false;draw()}else layer();
+ requestAnimationFrame(function(){var el=$(st.at);if(el)el.scrollIntoView({block:"center",behavior:"auto"});requestAnimationFrame(position)});
+}
+function position(){
+ var st=TOURS[S.tour].steps[S.step],el=$(st.at),sp=$("#spot"),tp=$("#tip");
+ if(!el||!sp||!tp)return;
+ var r=el.getBoundingClientRect(),pad=6;
+ sp.style.left=(r.left-pad)+"px";sp.style.top=(r.top-pad)+"px";sp.style.width=(r.width+pad*2)+"px";sp.style.height=(r.height+pad*2)+"px";
+ var tw=328,th=tp.offsetHeight,gap=16,L,T,arw=tp.querySelector(".arw"),p=st.p;
+ if(p==="right"&&r.right+gap+tw>innerWidth-12)p="left";
+ if(p==="left"&&r.left-gap-tw<12)p="bottom";
+ if(p==="bottom"&&r.bottom+gap+th>innerHeight-12)p="top";
+ if(p==="top"&&r.top-gap-th<12)p="bottom";
+ if(p==="bottom"){L=r.left+r.width/2-tw/2;T=r.bottom+gap;arw.style.cssText="left:calc(50% - 5px);top:-5px"}
+ else if(p==="top"){L=r.left+r.width/2-tw/2;T=r.top-gap-th;arw.style.cssText="left:calc(50% - 5px);bottom:-5px"}
+ else if(p==="right"){L=r.right+gap;T=r.top+r.height/2-th/2;arw.style.cssText="left:-5px;top:calc(50% - 5px)"}
+ else{L=r.left-gap-tw;T=r.top+r.height/2-th/2;arw.style.cssText="right:-5px;top:calc(50% - 5px)"}
+ tp.style.left=Math.max(12,Math.min(L,innerWidth-tw-12))+"px";
+ tp.style.top=Math.max(12,Math.min(T,innerHeight-th-12))+"px";
+ tp.focus();
+}
+function nextStep(){var t=TOURS[S.tour];if(S.step<t.steps.length-1){S.step++;goStep()}else{S.tour=null;S.done=true;draw()}}
+function actStep(){var st=TOURS[S.tour].steps[S.step];if(st.act){st.act.fn();S.dirty=true}nextStep()}
+function prevStep(){if(S.step>0){S.step--;goStep()}}
+function endTour(){S.tour=null;S.done=false;draw()}
+
+/* ================= overlays ================= */
+function layer(){
+ var h="";
+ if(S.tour){
+  var t=TOURS[S.tour],st=t.steps[S.step],last=S.step===t.steps.length-1;
+  h+='<div class="spot" id="spot"></div><div class="tip" id="tip" tabindex="-1" role="dialog" aria-label="Walkthrough step '+(S.step+1)+'"><i class="arw"></i>';
+  h+='<button class="x" data-a="end" aria-label="Close walkthrough">✕</button><span class="who">'+esc(st.w)+'</span><h3>'+esc(val(st.h))+'</h3><p>'+esc(val(st.b))+'</p>';
+  h+='<div class="ft2'+(st.act?' two':'')+'"><div class="prog">'+t.steps.map(function(_,i){return '<i class="'+(i<=S.step?"on":"")+'"></i>'}).join("")+'</div><span class="ct">'+(S.step+1)+' / '+t.steps.length+'</span>';
+  if(S.step>0)h+='<button class="btn sm" data-a="prev">Back</button>';
+  if(st.act)h+='<button class="btn sm" data-a="next">Skip</button><button class="btn sm pri" data-a="act">'+esc(st.act.label)+'</button></div>';
+  else h+='<button class="btn sm pri" data-a="next">'+(last?"Finish":"Next")+'</button></div>';
+  if(S.step===0)h+='<div style="margin-top:9px"><button class="skip" data-a="end">Skip and explore on my own</button></div>';
+  h+='</div>';
+ }
+ if(S.done){
+  var ks=Object.keys(TOURS),ix=ks.indexOf(S.last),more=[1,2].map(function(n){return ks[(ix+n)%ks.length]});
+  h+='<div class="ov"><div class="wel" style="width:min(480px,100%)"><div class="bd2" style="padding:28px 30px"><div class="done2"><div class="tick">✓</div><h2 style="font-size:19px">'+esc(TOURS[S.last].n)+'</h2><p style="margin:7px 0 0;font-size:13.5px;color:var(--muted)">'+esc(TOURS[S.last].fin)+'</p></div><div class="lbl" style="margin:20px 0 9px">Try another</div><div class="tours">'+more.map(tourRow).join("")+'</div><div class="welft"><button class="btn pri" data-a="explore">Explore on my own</button><button class="btn" data-a="restart">Replay this tour</button><button class="btn" data-a="tours" style="margin-left:auto">All walkthroughs</button></div></div></div></div>';
+ }
+ if(S.welcome)h+=welcome();
+ if(S.pin){var d=S.pin.d,x=Math.min(S.pin.x-136,innerWidth-290),y=Math.min(S.pin.y+16,innerHeight-160);
+  h+='<div class="pop" style="left:'+Math.max(10,x)+'px;top:'+Math.max(10,y)+'px"><button data-a="closepin" aria-label="Close note">✕</button><span class="tag '+(d.k==="new"?"new":"have")+'">'+(d.k==="new"?"Our proposal":"Sirion does this today")+'</span><p>'+esc(d.t)+'</p></div>';}
+ if(S.about)h+=aboutPage();
+ if(!S.tour&&!S.about)h+='<button class="aboutfab" data-a="about" aria-label="About this prototype"><i>i</i>About this prototype</button>';
+ if(S.modal)h+=modal();
+ if(S.toast)h+='<div class="toast" role="status">'+esc(S.toast)+'</div>';
+ $("#layer").innerHTML=h;
+}
+function tourRow(k){
+ var t=TOURS[k],n=t.steps.length;
+ if(t.quick)return '<button class="tq" data-tour="'+k+'"><b>'+esc(t.n)+'</b><s>'+esc(t.d)+' · '+n+' steps</s></button>';
+ return '<button class="tr" data-tour="'+k+'"><span class="ix">'+k.toUpperCase()+'</span><span><b>'+esc(t.n)+'</b><s>'+esc(t.d)+' · '+n+' steps</s></span><span class="go">→</span></button>';
+}
+function welcome(){
+ var s=stats();
+ var h='<div class="ov"><div class="wel"><div class="top2"><div class="lbl">Guided walkthrough</div><h2>Tea Post signs contracts it never reads again</h2>';
+ h+='<p>A tea and snacks chain in Gujarat. Terms are agreed carefully, then filed. Renewals arrive unnoticed, price rises go unchecked, and service credits are never claimed.</p>';
+ h+='<div class="facts"><span><b>3,000</b> employees</span><span><b>~2,500</b> suppliers</span><span><b>'+cr(s.due12)+'</b> of annual value up for a decision within 12 months</span></div></div>';
+ h+='<div class="bd2"><div class="cast">'+CAST.map(function(c){return '<div><span class="av" style="background:'+c.c+'">'+c.i+'</span><span><b>'+esc(c.n)+'</b><s>'+esc(c.r)+'</s></span></div>'}).join("")+'</div>';
+ h+='<div class="lbl" style="margin-bottom:9px">Pick a walkthrough</div><div class="tours">'+["a","b","c"].map(tourRow).join("")+'</div><div class="lbl" style="margin:14px 0 9px">Quick looks</div><div class="tqs">'+["d","e"].map(tourRow).join("")+'</div>';
+ h+='<div class="welft"><button class="btn" data-a="explore">Skip, let me explore</button><p>A concept prototype. Everything on screen is invented. Styled to sit inside a Sirion-like shell.</p></div></div></div></div>';
+ return h;
+}
+
+function modal(){
+ var id=S.cid,sp=SPEC[id],r=rowOf(id),h='<div class="ov" data-bg="1"><div class="wel" style="width:min(580px,100%)"><div class="bd2" style="padding:22px 26px 24px">';
+ if(S.modal.t==="docs"){
+  h+='<div style="display:flex;align-items:center;margin-bottom:12px"><h2 style="font-size:18px">Documents, '+esc(r.s)+'</h2><div class="spacer"></div><button class="btn sm" data-a="closemodal">Close</button></div><ul class="docs">';
+  sp.docs.forEach(function(d,i){h+='<li class="dl" data-doc="'+i+'" tabindex="0" role="button"><span class="ft '+d[0]+'">'+(d[0]==="ml"?"EML":d[0]==="doc"?"DOC":"PDF")+'</span><div><div>'+esc(d[1])+'</div><s>'+esc(d[2])+'</s></div></li>'});
+  return h+'</ul></div></div></div>';
+ }
+ var d=sp.docs[S.modal.i],key=d[3]||d[1],fs=FF(id).map(function(f,i){return {f:f,i:i}}).filter(function(x){return x.f.doc.indexOf(key)===0});
+ h+='<div style="display:flex;align-items:flex-start;margin-bottom:6px"><div><div class="lbl">'+(d[0]==="ml"?"Email":"Document")+'</div><h2 style="font-size:18px;margin-top:3px">'+esc(d[1])+'</h2><p style="margin:2px 0 0;font-size:12.5px;color:var(--muted)">'+esc(d[2])+'</p></div><div class="spacer"></div><button class="btn sm" data-a="docs">All documents</button> <button class="btn sm" data-a="closemodal" style="margin-left:6px">Close</button></div>';
+ if(d[0]==="ml")h+='<div class="letter" style="margin-top:14px">From: Kaveri Packaging<br>To: Procurement, Tea Post<br>Date: 12 March 2026<br>Subject: Volume discount<br><br>We can offer 3% off the cup price on volumes above 50,000 cups a month, from 1 April 2026.<br><br><span class="nt">Not a signed document. Not part of the contract unless Legal papers it.</span></div>';
+ else{
+  if(/scan/.test(d[2]))h+='<div class="scanw"><b>Low-quality scan.</b> Some words were read with low confidence and are marked not yet verified. <button class="btn sm"  data-send="Asked '+esc(r.s)+' for a clearer copy of '+esc(d[1])+'" data-cid="'+id+'">Request a clearer copy</button></div>';
+  h+='<div class="lbl" style="margin:16px 0 8px">Read from this document</div>';
+  if(fs.length)fs.forEach(function(x){h+='<div class="quote" style="margin-bottom:9px"><span class="src">'+esc(x.f.k)+' · '+esc(x.f.doc)+' · '+(fOK(x.i,id)?'verified':'not yet verified')+'</span>'+x.f.src+'</div>'});
+  else h+='<p style="margin:0;font-size:13px;color:var(--muted)">No field was read from this document.</p>';
+ }
+ return h+'</div></div></div>';
+}
+
+/* ================= events ================= */
+function firstUnv(){var id=S.cid,n=-1;FF(id).forEach(function(_,i){if(n<0&&!fOK(i,id))n=i});return n}
+document.addEventListener("click",function(e){
+ if(S.modal&&e.target.dataset&&e.target.dataset.bg){S.modal=null;layer();return}
+ var t=e.target.closest("[data-a],[data-tour],[data-go],[data-open],[data-tab],[data-sel],[data-opt],[data-askq],[data-askc],[data-toast],[data-send],[data-rf],[data-sec],[data-ck],[data-rtab],[data-doc],[data-pickp],#notesbtn");
+ if(S.tour&&!e.target.closest("#layer")){if(e.target.closest("a"))e.preventDefault();return}
+ if(!t){if(S.pin&&!e.target.closest(".pop")){S.pin=null;layer()}return}
+ if(t.tagName==="A")e.preventDefault();
+ var d=t.dataset,c;
+ if(d.tour){startTour(d.tour);return}
+ if(t.id==="notesbtn"){S.notes=!S.notes;S.pin=null;redraw();return}
+ if(d.open){openContract(d.open,d.tabAfter);return}
+ if(d.go){go(d.go);return}
+ if(d.tab){S.tab=d.tab;S.pin=null;S.screen="contract";S.pick=false;S.edit=false;redraw();return}
+ if(d.sel!==undefined){S.sel=+d.sel;S.edit=false;S.pin=null;redraw();return}
+ if(d.opt){cs().dec=d.opt;redraw();return}
+ if(d.askq!==undefined){var i=+d.askq;S.ask=i;if(i<2)S.askId="kaveri";S.qtxt=Q[i];redraw();return}
+ if(d.askc){S.screen="ask";S.askId=d.askc;S.ask=0;S.qtxt=d.askc==="kaveri"?Q[0]:"When must we give notice to "+rowOf(d.askc).s+"?";S.pin=null;draw();return}
+ if(d.ck!==undefined){S.ck=+d.ck;TODAY=STOPS[S.ck];S.pin=null;redraw();return}
+ if(d.sec){var el=document.getElementById("ab-"+d.sec);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return}
+ if(d.rf){S.rf=d.rf;redraw();return}
+ if(d.rtab){S.rt=d.rtab;redraw();return}
+ if(d.doc!==undefined){S.modal={t:"doc",i:+d.doc};layer();return}
+ if(d.pickp){assign(S.cid,d.pickp);S.pick=false;redraw();toast(PEOPLE[d.pickp].n+" named as owner. Alert sent.");return}
+ if(d.toast){toast(d.toast==="1"?null:d.toast);return}
+ if(d.send){cs(d.cid||S.cid).log.push([td(),d.send]);redraw();toast(d.send+". Logged on the contract.");return}
+ var a=d.a;
+ if(a==="next")nextStep();
+ else if(a==="prev")prevStep();
+ else if(a==="end")endTour();
+ else if(a==="explore"){S.welcome=false;S.done=false;S.tour=null;draw()}
+ else if(a==="restart")startTour(S.last||"a");
+ else if(a==="tours"){S.done=false;S.welcome=true;S.pin=null;S.modal=null;draw()}
+ else if(a==="act")actStep();
+ else if(a==="closepin"){S.pin=null;layer()}
+ else if(a==="about"){S.about=true;S.pin=null;layer();var ab=$("#about");if(ab)ab.scrollTop=0}
+ else if(a==="closeabout"){S.about=false;layer()}
+ else if(a==="closemodal"){S.modal=null;layer()}
+ else if(a==="docs"){S.modal={t:"docs"};layer()}
+ else if(a==="reset"){reset();S.welcome=true;draw();var m=$("#main");if(m)m.scrollTop=0}
+ else if(a==="reassign"){S.pick=true;redraw()}
+ else if(a==="cancelpick"){S.pick=false;redraw()}
+ else if(a==="accept"){c=cs();c.acc=true;c.accOn=td();S.pick=false;c.log.push([td(),ownerName()+" accepted ownership"]);redraw()}
+ else if(a==="accf"){c=cs();c.fv[S.sel]=true;c.fd[S.sel]=td();c.log.push([td(),"Meera Joshi accepted "+FF()[S.sel].k.toLowerCase()+" as read"]);var n=firstUnv();if(n>=0)S.sel=n;redraw()}
+ else if(a==="edit"){S.edit=true;redraw()}
+ else if(a==="canceledit"){S.edit=false;redraw()}
+ else if(a==="saveedit"){var v=(($("#editv")||{}).value||"").trim();if(!v){toast("Enter the corrected value");return}c=cs();c.val[S.sel]=v;c.fv[S.sel]=true;c.fd[S.sel]=td();c.log.push([td(),"Meera Joshi corrected "+FF()[S.sel].k.toLowerCase()+" to \""+v+"\""]);S.edit=false;var n2=firstUnv();if(n2>=0)S.sel=n2;redraw()}
+ else if(a==="rec"){
+  c=cs();
+  if(!ownerOf()){toast("Name an owner on the Overview tab first.");return}
+  if(!c.why.trim()){toast("Add a reason. It stays with the contract for next year's owner.");return}
+  if(ownState(S.cid)!=="ok"){c.acc=true;c.accOn=td();c.log.push([td(),ownerName()+" accepted ownership, with the decision"])}
+  c.rec=true;c.log.push([td(),"Decision: "+c.dec+". "+c.why.trim()]);redraw();
+ }
+ else if(a==="reopen"){c=cs();c.rec=false;c.log.push([td(),"Decision reopened. The earlier decision stays in this log"]);redraw();toast("Decision reopened")}
+ else if(a==="clearrq"){S.rq="";redraw()}
+ else if(a==="askgo"){var q=($("#q")||{}).value||"";S.qtxt=q;if(!q.trim()){toast("Type a question, or pick one above");return}var m2=matchQ(q);S.ask=m2.a;S.askId=m2.id;redraw()}
+});
+document.addEventListener("input",function(e){if(e.target.id==="why")cs().why=e.target.value;if(e.target.id==="rq"){S.rq=e.target.value;redraw();var i=$("#rq");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}});
+document.addEventListener("keydown",function(e){
+ if(e.target.id==="q"&&e.key==="Enter"){var q=e.target.value;S.qtxt=q;if(q.trim()){var m=matchQ(q);S.ask=m.a;S.askId=m.id}redraw();return}
+ if(e.target.id==="editv"&&e.key==="Enter"){var b=document.querySelector('[data-a="saveedit"]');if(b)b.click();return}
+ if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("dl")){e.preventDefault();e.target.click();return}
+ if(S.tour){if(e.key==="Escape")endTour();if(e.key==="ArrowRight")nextStep();if(e.key==="ArrowLeft")prevStep()}
+ else if(e.key==="Escape"){if(S.about){S.about=false;layer()}else if(S.modal){S.modal=null;layer()}else if(S.pin){S.pin=null;layer()}}
+});
+addEventListener("resize",function(){if(S.tour)position()});
+draw();
+
+</script>
+</body>
+</html>
